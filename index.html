@@ -9,11 +9,7 @@
 <body>
 <main>
 <section id="menu" class="menu">
-  <div class="menu-scene" aria-hidden="true">
-    <div class="moon"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div>
-    <div class="hill hill-back"></div><div class="hill hill-front"></div>
-    <div class="flower flower-a">✿</div><div class="flower flower-b">✿</div><div class="flower flower-c">✿</div>
-  </div>
+  <div class="menu-scene" aria-hidden="true"><div class="moon"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="flower flower-a">✿</div><div class="flower flower-b">✿</div><div class="flower flower-c">✿</div></div>
   <div class="menu-content">
     <div class="game-mark"><span>✦</span><div class="crown">♕</div><span>✦</span></div>
     <p class="eyebrow">UMA AVENTURA EM MINIATURA</p>
@@ -29,17 +25,14 @@
     <p class="version">A COROA PERDIDA • PRÓLOGO</p>
   </div>
 </section>
-
-<section id="gameScreen" class="game-screen hidden">
-  <div class="topbar"><button id="pauseBtn">Ⅱ</button><strong id="phaseTitle">Jardim da Rainha</strong><span id="objective">Recupere as coroas</span></div>
-  <div class="game-wrap"><canvas id="game" width="960" height="540"></canvas></div>
-  <div class="touch-controls"><button data-key="arrowleft">◀</button><button data-key="jump">⬆</button><button data-key="arrowright">▶</button></div>
-  <p class="hint">Celular: botões • PC: ← → / A D + Espaço • Esc pausa</p>
-</section>
-
-<section id="pause" class="overlay hidden"><h2>Jogo pausado</h2><button id="resumeBtn">Continuar</button><button id="restartBtn" class="secondary">Recomeçar fase</button><button id="menuBtn" class="secondary">Menu principal</button></section>
-<section id="story" class="overlay hidden"><div id="storyText"></div><button id="storyNext">Continuar</button></section>
 </main>
-<script src="game.js"></script>
+<script>
+const lore='Há muito tempo, a pequena Rainha guardava uma coroa que não era apenas um símbolo. Ela mantinha o equilíbrio entre os lugares do reino. Certa manhã, a coroa desapareceu. Desde então, caminhos mudaram, criaturas estranhas apareceram e partes do reino ficaram isoladas.';
+const info=document.getElementById('info');
+document.getElementById('startBtn').onclick=()=>location.href='game.html?new=1';
+document.getElementById('continueBtn').onclick=()=>location.href='game.html';
+document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>Lore</b><br>'+lore;info.classList.remove('hidden')};
+document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. Explore, enfrente inimigos e recupere a Coroa Real.';info.classList.remove('hidden')};
+</script>
 </body>
 </html>
