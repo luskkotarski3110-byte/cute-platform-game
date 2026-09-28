@@ -29,8 +29,8 @@
 <script>
 const lore='Há muito tempo, a pequena Rainha guardava uma coroa que não era apenas um símbolo. Ela mantinha o equilíbrio entre os lugares do reino. Certa manhã, a coroa desapareceu. Desde então, caminhos mudaram, criaturas estranhas apareceram e partes do reino ficaram isoladas.';
 const info=document.getElementById('info');
-document.getElementById('startBtn').onclick=()=>location.href='game.html?new=1';
-document.getElementById('continueBtn').onclick=()=>location.href='game.html';
+document.getElementById('startBtn').onclick=()=>location.href='campaign.html?new=1';
+document.getElementById('continueBtn').onclick=()=>location.href='campaign.html';
 document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>Lore</b><br>'+lore;info.classList.remove('hidden')};
 document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. Explore, enfrente inimigos e recupere a Coroa Real.';info.classList.remove('hidden')};
 </script>
