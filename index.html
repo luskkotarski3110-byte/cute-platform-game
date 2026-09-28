@@ -1,1 +1,34 @@
-<!doctype html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><title>A Coroa Perdida</title><link rel="stylesheet" href="style.css"></head><body><main><h1>👑 A Coroa Perdida</h1><p>Jardim da Rainha — Protótipo</p><div class="game-wrap"><canvas id="game" width="960" height="540"></canvas></div><div class="touch-controls" aria-label="Controles do jogo"><button data-key="arrowleft">◀</button><button data-key="space">⬆</button><button data-key="arrowright">▶</button></div><p class="hint">Celular: use os botões • PC: ← → / A D + Espaço</p></main><script src="game.js"></script></body></html>
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>A Coroa Perdida</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <section id="menu" class="menu">
+    <div class="crown">👑</div>
+    <h1>A Coroa Perdida</h1>
+    <p>Uma pequena aventura em um mundo enorme.</p>
+    <button id="startBtn">Começar aventura</button>
+    <button id="howBtn" class="secondary">Como jogar</button>
+    <div id="howTo" class="how hidden">Ande, pule, desvie dos inimigos e recupere a Coroa Real.</div>
+  </section>
+
+  <section id="gameScreen" class="game-screen hidden">
+    <h1>👑 A Coroa Perdida</h1>
+    <p>Jardim da Rainha — Fase 1</p>
+    <div class="game-wrap"><canvas id="game" width="960" height="540"></canvas></div>
+    <div class="touch-controls" aria-label="Controles do jogo">
+      <button data-key="arrowleft">◀</button>
+      <button data-key="jump">⬆</button>
+      <button data-key="arrowright">▶</button>
+    </div>
+    <p class="hint">Celular: use os botões • PC: ← → / A D + Espaço</p>
+  </section>
+</main>
+<script src="game.js"></script>
+</body>
+</html>
