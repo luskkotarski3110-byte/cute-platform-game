@@ -3,39 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#7c55e8">
+<meta name="theme-color" content="#7b315f">
 <title>Zip Zip — Aventura dos Hamsters</title>
 <link rel="stylesheet" href="style.css">
 <style>
-#menu{position:relative;min-height:100vh;overflow:hidden;background:#7752e5}
-.menu-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
-.menu-overlay{position:absolute;inset:0;background:transparent}
-.menu-content{position:relative;z-index:3;width:100%;height:100vh;min-height:620px;display:block}
-.menu-buttons{position:absolute;left:50%;top:56%;width:min(74vw,390px);transform:translateX(-50%);display:flex;flex-direction:column;gap:10px}
-.menu-buttons button{opacity:0;cursor:pointer;border:0;background:transparent;height:54px;min-height:54px}
-.game-mark,.eyebrow,.bubble-logo,.tagline,.version{display:none}
-#info{position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);width:min(86vw,430px);padding:14px 18px;border-radius:18px;background:rgba(44,22,65,.92);color:#fff;text-align:center;font:600 15px/1.45 system-ui;box-shadow:0 8px 30px rgba(0,0,0,.25)}
-.hidden{display:none!important}
-@media (min-width:700px){
- .menu-buttons{top:59%;width:360px}
- .menu-buttons button{height:64px}
+#menu{position:relative;min-height:100svh;overflow:hidden;background:#24101f}
+.menu-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
+.menu-overlay{position:absolute;inset:0;background:linear-gradient(180deg,#240d2430 0%,#35102d12 45%,#16081766 100%);z-index:1;pointer-events:none}
+.menu-content{position:relative;z-index:3;width:min(680px,calc(100% - 30px));height:auto;min-height:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:none}
+.menu-card-art{display:block;width:100%;height:auto;border-radius:28px;box-shadow:0 30px 90px #090309aa,0 0 45px #ff8fc322}
+.menu-buttons{position:absolute;left:50%;top:52%;width:72%;transform:translate(-50%,-50%);display:grid;grid-template-columns:1fr;gap:9px;margin:0}
+.menu-buttons button{opacity:0;background:transparent;border:0;height:54px;min-height:54px;cursor:pointer}
+.menu-buttons button:nth-child(1){height:62px}
+#info{position:fixed;z-index:20;left:50%;bottom:24px;transform:translateX(-50%);width:min(86vw,430px);padding:14px 18px;border-radius:18px;background:rgba(44,22,65,.94);color:#fff;text-align:center;font:600 15px/1.45 system-ui;box-shadow:0 8px 30px rgba(0,0,0,.3)}
+@media(max-width:700px){
+ #menu{padding:0 14px;display:flex;align-items:center;justify-content:center}
+ .menu-content{width:min(100%,560px)}
+ .menu-card-art{border-radius:27px}
+ .menu-buttons{top:53%;width:74%;gap:8px}
+ .menu-buttons button{height:49px;min-height:49px}
+ .menu-buttons button:nth-child(1){height:56px}
 }
+@media(min-width:701px){#menu{display:flex;align-items:center;justify-content:center}.menu-buttons{top:54%}}
 </style>
 </head>
 <body>
 <main>
 <section id="menu" class="menu" aria-label="Menu principal do Zip Zip">
-  <img class="menu-background" src="assets/zipzip-menu.webp" alt="Tela inicial ilustrada de Zip Zip com hamsters em um jardim encantado">
-  <div class="menu-overlay" aria-hidden="true"></div>
-  <div class="menu-content">
-    <div class="menu-buttons" aria-label="Menu do jogo">
-      <button id="startBtn" aria-label="Novo jogo"></button>
-      <button id="continueBtn" aria-label="Continuar"></button>
-      <button id="loreBtn" aria-label="Lore"></button>
-      <button id="howBtn" aria-label="Como jogar"></button>
-    </div>
-    <div id="info" class="hidden"></div>
-  </div>
+<img class="menu-background" src="assets/zipzip-bg.png" alt="" aria-hidden="true">
+<div class="menu-overlay" aria-hidden="true"></div>
+<div class="menu-content">
+<img class="menu-card-art" src="assets/zipzip-menu.webp" alt="Tela de menu do Zip Zip com hamsters em estilo de jogo">
+<div class="menu-buttons" aria-label="Menu do jogo">
+<button id="startBtn" aria-label="Novo jogo"></button>
+<button id="continueBtn" aria-label="Continuar"></button>
+<button id="loreBtn" aria-label="Lore"></button>
+<button id="howBtn" aria-label="Como jogar"></button>
+</div>
+<div id="info" class="hidden"></div>
+</div>
 </section>
 </main>
 <script>
