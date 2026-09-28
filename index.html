@@ -3,39 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#7b315f">
+<meta name="theme-color" content="#7c55e8">
 <title>Zip Zip — Aventura dos Hamsters</title>
 <link rel="stylesheet" href="style.css">
+<style>
+#menu{position:relative;min-height:100vh;overflow:hidden;background:#7752e5}
+.menu-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+.menu-overlay{position:absolute;inset:0;background:transparent}
+.menu-content{position:relative;z-index:3;width:100%;height:100vh;min-height:620px;display:block}
+.menu-buttons{position:absolute;left:50%;top:56%;width:min(74vw,390px);transform:translateX(-50%);display:flex;flex-direction:column;gap:10px}
+.menu-buttons button{opacity:0;cursor:pointer;border:0;background:transparent;height:54px;min-height:54px}
+.game-mark,.eyebrow,.bubble-logo,.tagline,.version{display:none}
+#info{position:absolute;z-index:8;left:50%;bottom:24px;transform:translateX(-50%);width:min(86vw,430px);padding:14px 18px;border-radius:18px;background:rgba(44,22,65,.92);color:#fff;text-align:center;font:600 15px/1.45 system-ui;box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.hidden{display:none!important}
+@media (min-width:700px){
+ .menu-buttons{top:59%;width:360px}
+ .menu-buttons button{height:64px}
+}
+</style>
 </head>
 <body>
 <main>
-<section id="menu" class="menu">
-  <img class="menu-background" src="./assets/zipzip-bg.png" alt="" aria-hidden="true">
+<section id="menu" class="menu" aria-label="Menu principal do Zip Zip">
+  <img class="menu-background" src="assets/zipzip-menu.webp" alt="Tela inicial ilustrada de Zip Zip com hamsters em um jardim encantado">
   <div class="menu-overlay" aria-hidden="true"></div>
-  <div class="menu-glow" aria-hidden="true"></div>
   <div class="menu-content">
-    <div class="game-mark" aria-hidden="true"><span>✦</span><span class="sparkle-dot">•</span><span>✦</span></div>
-    <p class="eyebrow">UMA AVENTURA DE HAMSTERS TREVOSOS</p>
-    <h1 class="bubble-logo" aria-label="Zip Zip"><span>Zip</span> <em>Zip</em></h1>
-    <p class="tagline">Pequenos heróis. Um mundo encantado. Uma aventura maior do que parece.</p>
-    <div class="menu-buttons">
-      <button id="startBtn" class="primary">Novo jogo <span>›</span></button>
-      <button id="continueBtn" class="secondary">Continuar</button>
-      <button id="loreBtn" class="secondary">Lore</button>
-      <button id="howBtn" class="secondary">Como jogar</button>
+    <div class="menu-buttons" aria-label="Menu do jogo">
+      <button id="startBtn" aria-label="Novo jogo"></button>
+      <button id="continueBtn" aria-label="Continuar"></button>
+      <button id="loreBtn" aria-label="Lore"></button>
+      <button id="howBtn" aria-label="Como jogar"></button>
     </div>
-    <div id="info" class="info hidden"></div>
-    <p class="version">ZIP ZIP • AVENTURA EM MINIATURA</p>
+    <div id="info" class="hidden"></div>
   </div>
 </section>
 </main>
 <script>
-const lore='Em um cantinho escondido do jardim existe um pequeno mundo de hamsters. Quando uma energia misteriosa começa a corromper os caminhos e transformar lugares encantados, Zip Zip parte em uma aventura para descobrir a origem do desequilíbrio. Entre jardins, bosques e vilas, cada pista revela um pouco mais sobre a história.';
+const lore='Em um cantinho escondido do jardim existe um pequeno mundo de hamsters. Quando uma energia misteriosa começa a corromper os caminhos, Zip Zip parte para descobrir a origem do desequilíbrio.';
 const info=document.getElementById('info');
 document.getElementById('startBtn').onclick=()=>location.href='campaign.html?new=1';
 document.getElementById('continueBtn').onclick=()=>location.href='campaign.html';
-document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>Lore</b><br>'+lore;info.classList.remove('hidden')};
-document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. Explore, enfrente criaturas e descubra os segredos do mundo de Zip Zip.';info.classList.remove('hidden')};
+document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>✦ Lore</b><br>'+lore;info.classList.remove('hidden')};
+document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>🎮 Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. No celular, use os controles da fase.';info.classList.remove('hidden')};
 </script>
 </body>
 </html>
