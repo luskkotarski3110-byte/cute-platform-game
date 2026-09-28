@@ -63,16 +63,27 @@ addEventListener('keydown',e=>{
   if([' ','arrowup','arrowleft','arrowright'].includes(k))e.preventDefault();
 });
 addEventListener('keyup',e=>keys[e.key.toLowerCase()]=false);
-document.querySelectorAll('.touch-controls button').forEach(btn=>{
+const controlButtons=document.querySelectorAll('.touch-controls button');
+controlButtons.forEach(btn=>{
   const k=btn.dataset.key;
-  btn.addEventListener('pointerdown',e=>{
+  const press=e=>{
     e.preventDefault();
-    if(k==='jump')touch.jump=true; else touch[k]=true;
-  });
-  ['pointerup','pointercancel','pointerleave'].forEach(ev=>btn.addEventListener(ev,e=>{
+    if(btn.setPointerCapture && e.pointerId!=null){try{btn.setPointerCapture(e.pointerId)}catch(_){}}
+    if(k==='jump'){
+      touch.jump=true;
+    }else{
+      touch[k]=true;
+    }
+  };
+  const release=e=>{
     e.preventDefault();
-    if(k!=='jump')touch[k]=false;
-  }));
+    if(k!=='jump') touch[k]=false;
+  };
+  btn.addEventListener('pointerdown',press);
+  btn.addEventListener('pointerup',release);
+  btn.addEventListener('pointercancel',release);
+  btn.addEventListener('lostpointercapture',release);
+  btn.addEventListener('contextmenu',e=>e.preventDefault());
 });
 function togglePause(){
   if(state==='play'){state='pause';$('pause').classList.remove('hidden')}
