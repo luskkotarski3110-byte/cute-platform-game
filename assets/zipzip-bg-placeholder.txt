@@ -1,0 +1,1 @@
+Place the Zip Zip menu background image in this folder as zipzip-bg.png or zipzip-bg.jpg.
