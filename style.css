@@ -5,7 +5,7 @@ main{width:100%;min-height:100vh}
 .hidden{display:none!important}
 
 .menu{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;background:#24101f}
-.menu-art{position:absolute;inset:0;background-image:url("assets/zipzip-bg.png?v=2");background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1.01)}
+.menu-art{position:absolute;inset:0;background-image:url("https://raw.githubusercontent.com/luskkotarski3110-byte/cute-platform-game/main/assets/zipzip-bg.png");background-size:cover;background-position:center;background-repeat:no-repeat;transform:scale(1.01)}
 .menu-art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#240d2455 0%,#35102d22 42%,#160817aa 100%)}
 .menu-glow{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 45%,#ffb4e833 0 13%,transparent 34%),radial-gradient(circle at 20% 20%,#fff4d51a 0 5%,transparent 20%);pointer-events:none;mix-blend-mode:screen}
 
