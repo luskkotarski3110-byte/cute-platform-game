@@ -6,7 +6,7 @@ const touch = { left:false, right:false };
 let paused = false;
 let finished = false;
 let last = performance.now();
-let anim = 0;
+let anim = 2;
 let animTimer = 0;
 
 const sprite = new Image();
@@ -116,8 +116,8 @@ function update(dt) {
   }
 
   animTimer += dt;
-  if (animTimer > 0.10) {
-    anim = (anim + 1) % 5;
+  if (animTimer > 0.14) {
+    anim = anim === 1 ? 2 : 1;
     animTimer = 0;
   }
 }
@@ -130,7 +130,9 @@ function drawBackground() {
     ctx.save();
     // Reduz o aspecto "estourado" sem mudar a composição da arte.
     ctx.filter = 'brightness(0.88) contrast(1.08) saturate(0.96)';
-    ctx.imageSmoothingEnabled = true;
+    // A arte é pixel-art e foi preparada em 480x270, exatamente metade do canvas.
+    // Escala 2x sem interpolação para manter os pixels nítidos e evitar o aspecto borrado.
+    ctx.imageSmoothingEnabled = false;
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
     ctx.restore();
   }
@@ -174,13 +176,15 @@ function drawPlayer() {
     return;
   }
 
-  // Visual grande, como personagem de plataforma 2D; hitbox continua menor.
+  // Personagem grande e estável, como em um plataforma 2D.
+  // Usamos somente poses semelhantes para não dar a impressão de que ele "vira" de lado.
   ctx.imageSmoothingEnabled = false;
-  const size = 132;
+  const size = 146;
+  const frame = player.vx === 0 ? 2 : anim;
   ctx.drawImage(
     sprite,
-    anim * 32, 0, 32, 32,
-    player.x - 36, player.y - 30, size, size
+    frame * 32, 0, 32, 32,
+    player.x - 40, player.y - 36, size, size
   );
 }
 
@@ -234,15 +238,13 @@ addEventListener('keydown', e => {
 
 addEventListener('keyup', e => { keys[e.key] = false; });
 
-// Controles de celular: funcionam tanto com Pointer Events quanto com touch antigo.
+// Controles de celular: um único sistema de Pointer Events evita o bug de alternância.
 document.querySelectorAll('.touch-controls button').forEach(btn => {
   const action = btn.dataset.key;
 
   const press = e => {
     e.preventDefault();
-    if (btn.setPointerCapture && e.pointerId !== undefined) {
-      try { btn.setPointerCapture(e.pointerId); } catch (_) {}
-    }
+    try { btn.setPointerCapture(e.pointerId); } catch (_) {}
 
     if (action === 'jump') {
       jump();
@@ -260,10 +262,7 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
   btn.addEventListener('pointerup', release, {passive:false});
   btn.addEventListener('pointercancel', release, {passive:false});
   btn.addEventListener('lostpointercapture', release, {passive:false});
-
-  btn.addEventListener('touchstart', press, {passive:false});
-  btn.addEventListener('touchend', release, {passive:false});
-  btn.addEventListener('touchcancel', release, {passive:false});
+  btn.addEventListener('pointerleave', release, {passive:false});
 });
 
 addEventListener('blur', () => {
