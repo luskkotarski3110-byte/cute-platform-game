@@ -5,9 +5,9 @@ main{width:100%;min-height:100vh}
 .hidden{display:none!important}
 
 .menu{position:relative;min-height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center;text-align:center;background:#24101f}
-.menu-art{position:absolute;inset:0;background:#24101f url("assets/zipzip-bg.png") center center / cover no-repeat;transform:scale(1.01);z-index:0;display:block;min-height:100%}
-.menu-art:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,#240d2455 0%,#35102d22 42%,#160817aa 100%)}
-.menu-glow{position:absolute;inset:-20%;background:radial-gradient(circle at 50% 45%,#ffb4e833 0 13%,transparent 34%),radial-gradient(circle at 20% 20%,#fff4d51a 0 5%,transparent 20%);pointer-events:none;mix-blend-mode:screen}
+.menu-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
+.menu-overlay{position:absolute;inset:0;background:linear-gradient(180deg,#240d2455 0%,#35102d22 42%,#160817aa 100%);z-index:1;pointer-events:none}
+.menu-glow{z-index:1;position:absolute;inset:-20%;background:radial-gradient(circle at 50% 45%,#ffb4e833 0 13%,transparent 34%),radial-gradient(circle at 20% 20%,#fff4d51a 0 5%,transparent 20%);pointer-events:none;mix-blend-mode:screen}
 
 .menu-content{position:relative;z-index:2;width:min(680px,calc(100% - 30px));padding:clamp(24px,5vw,42px) clamp(18px,5vw,44px) clamp(20px,4vw,32px);border-radius:clamp(24px,5vw,38px);background:linear-gradient(145deg,#35172ecc,#160d1dcc);border:1px solid #ffd7f04a;box-shadow:0 30px 90px #090309aa,0 0 45px #ff8fc322,inset 0 1px #ffffff2e;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .game-mark{display:flex;justify-content:center;align-items:center;gap:16px;color:#ffd6f2;font-size:19px;text-shadow:0 0 18px #ffb9e2}
