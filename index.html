@@ -3,54 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<meta name="theme-color" content="#7b315f">
+<meta name="theme-color" content="#7c55e8">
 <title>Zip Zip — Aventura dos Hamsters</title>
 <link rel="stylesheet" href="style.css">
 <style>
-#menu{position:relative;min-height:100svh;overflow:hidden;background:#24101f}
+#menu{position:relative;min-height:100svh;overflow:hidden;background:#7b58e5}
 .menu-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;display:block}
-.menu-overlay{position:absolute;inset:0;background:linear-gradient(180deg,#240d2430 0%,#35102d12 45%,#16081766 100%);z-index:1;pointer-events:none}
-.menu-content{position:relative;z-index:3;width:min(680px,calc(100% - 30px));height:auto;min-height:0;padding:0;border:0;border-radius:0;background:none;box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none;transform:none}
-.menu-card-art{display:block;width:100%;height:auto;border-radius:28px;box-shadow:0 30px 90px #090309aa,0 0 45px #ff8fc322}
-.menu-buttons{position:absolute;left:50%;top:52%;width:72%;transform:translate(-50%,-50%);display:grid;grid-template-columns:1fr;gap:9px;margin:0}
-.menu-buttons button{opacity:0;background:transparent;border:0;height:54px;min-height:54px;cursor:pointer}
-.menu-buttons button:nth-child(1){height:62px}
-#info{position:fixed;z-index:20;left:50%;bottom:24px;transform:translateX(-50%);width:min(86vw,430px);padding:14px 18px;border-radius:18px;background:rgba(44,22,65,.94);color:#fff;text-align:center;font:600 15px/1.45 system-ui;box-shadow:0 8px 30px rgba(0,0,0,.3)}
-@media(max-width:700px){
- #menu{padding:0 14px;display:flex;align-items:center;justify-content:center}
- .menu-content{width:min(100%,560px)}
- .menu-card-art{border-radius:27px}
- .menu-buttons{top:53%;width:74%;gap:8px}
- .menu-buttons button{height:49px;min-height:49px}
- .menu-buttons button:nth-child(1){height:56px}
-}
-@media(min-width:701px){#menu{display:flex;align-items:center;justify-content:center}.menu-buttons{top:54%}}
+.menu-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(55,22,100,.08),rgba(39,12,64,.18) 70%,rgba(22,8,36,.38));z-index:1;pointer-events:none}
+.menu-content{position:relative;z-index:3;width:min(430px,calc(100% - 28px));padding:24px 20px 22px;border-radius:34px;background:linear-gradient(180deg,rgba(63,27,91,.94),rgba(36,16,53,.96));border:2px solid rgba(255,224,250,.36);box-shadow:0 24px 70px rgba(26,8,39,.5),inset 0 1px rgba(255,255,255,.16);text-align:center}
+.menu-buttons{display:grid;grid-template-columns:1fr;gap:10px;width:min(100%,350px);margin:0 auto}
+.menu-btn{display:block;min-height:53px;border:2px solid rgba(255,255,255,.48);border-radius:999px;padding:11px 18px;background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(238,220,255,.95));color:#4b285e;font-size:16px;font-weight:900;box-shadow:0 5px 0 rgba(113,62,132,.45),0 10px 20px rgba(20,5,35,.16);cursor:pointer}
+.menu-btn.primary{background:linear-gradient(180deg,#ffd5ec,#ff9fca);color:#542052;border-color:#fff0fa}
+.menu-btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(113,62,132,.45)}
+.hamster-badge{width:78px;height:78px;margin:0 auto 8px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 40% 32%,#fff9ff,#f8c7dc 48%,#bd73b4 100%);border:4px solid #fff1fa;box-shadow:0 7px 20px rgba(0,0,0,.22);position:relative}
+.hamster-badge:before,.hamster-badge:after{content:"";position:absolute;width:25px;height:25px;border-radius:50%;top:5px;background:#f2a5c5;border:4px solid #fff1fa;z-index:-1}
+.hamster-badge:before{left:3px}.hamster-badge:after{right:3px}
+.hamster-face{width:46px;height:39px;border-radius:48% 48% 45% 45%;background:#fff6f8;border:3px solid #6c3973;position:relative}
+.hamster-face:before,.hamster-face:after{content:"";position:absolute;top:12px;width:6px;height:8px;border-radius:50%;background:#3d2947}
+.hamster-face:before{left:9px}.hamster-face:after{right:9px}
+.hamster-nose{position:absolute;left:19px;top:22px;width:8px;height:6px;border-radius:50%;background:#f08ab5}
+.bubble-logo{margin:2px auto 9px;display:block;font-family:"Arial Rounded MT Bold","Trebuchet MS",sans-serif;font-weight:1000;font-size:clamp(54px,15vw,76px);letter-spacing:-5px;line-height:.86;text-shadow:0 4px 0 #fff,0 7px 0 rgba(91,49,126,.65),0 12px 18px rgba(31,10,47,.35)}
+.bubble-logo span{color:#ff9dcc}.bubble-logo b{color:#9e8cff}
+.tagline{margin:10px auto 20px;max-width:340px;font-size:14px;line-height:1.45;font-weight:700;color:#fff3fb}
+#info{position:fixed;z-index:20;left:50%;bottom:18px;transform:translateX(-50%);width:min(88vw,430px);padding:17px 18px;border-radius:22px;background:rgba(43,19,60,.97);border:1px solid rgba(255,220,245,.3);box-shadow:0 15px 40px rgba(0,0,0,.38);color:#fff;text-align:center;font-size:14px;line-height:1.55}
+#info button{margin-top:10px;border:0;border-radius:999px;padding:8px 18px;background:#ffc0df;color:#4a214f;font-weight:900}
+.hidden{display:none!important}
+@media(min-width:701px){#menu{display:flex;align-items:center;justify-content:center}}
+@media(max-width:700px){#menu{padding:14px;display:flex;align-items:center;justify-content:center}.menu-content{width:min(100%,430px)}}
+@media(max-height:650px){.menu-content{padding:16px}.hamster-badge{width:58px;height:58px}.bubble-logo{font-size:52px}.tagline{margin:7px auto 11px}.menu-btn{min-height:44px}}
 </style>
 </head>
 <body>
 <main>
 <section id="menu" class="menu" aria-label="Menu principal do Zip Zip">
-<img class="menu-background" src="assets/zipzip-bg.png" alt="" aria-hidden="true">
+<img class="menu-background" src="assets/zipzip-bg.png" alt="Jardim encantado de Zip Zip com hamsters">
 <div class="menu-overlay" aria-hidden="true"></div>
 <div class="menu-content">
-<img class="menu-card-art" src="assets/zipzip-menu.webp" alt="Tela de menu do Zip Zip com hamsters em estilo de jogo">
+<div class="hamster-badge" aria-hidden="true"><div class="hamster-face"><i class="hamster-nose"></i></div></div>
+<div class="bubble-logo"><span>Zip</span> <b>Zip</b></div>
+<p class="tagline">Uma aventura de hamsters trevosos.<br>Um mundo encantado. Uma aventura maior do que parece.</p>
 <div class="menu-buttons" aria-label="Menu do jogo">
-<button id="startBtn" aria-label="Novo jogo"></button>
-<button id="continueBtn" aria-label="Continuar"></button>
-<button id="loreBtn" aria-label="Lore"></button>
-<button id="howBtn" aria-label="Como jogar"></button>
+<button class="menu-btn primary" id="startBtn">✦ Novo jogo</button>
+<button class="menu-btn" id="continueBtn">▶ Continuar</button>
+<button class="menu-btn" id="loadBtn">▣ Carregar</button>
+<button class="menu-btn" id="loreBtn">✦ Lore</button>
+<button class="menu-btn" id="howBtn">? Como jogar</button>
+</div>
 </div>
 <div id="info" class="hidden"></div>
-</div>
 </section>
 </main>
 <script>
-const lore='Em um cantinho escondido do jardim existe um pequeno mundo de hamsters. Quando uma energia misteriosa começa a corromper os caminhos, Zip Zip parte para descobrir a origem do desequilíbrio.';
 const info=document.getElementById('info');
+function showInfo(title,text){info.innerHTML='<strong>'+title+'</strong><br>'+text+'<br><button id="closeInfo">Fechar</button>';info.classList.remove('hidden');document.getElementById('closeInfo').onclick=()=>info.classList.add('hidden')}
 document.getElementById('startBtn').onclick=()=>location.href='campaign.html?new=1';
 document.getElementById('continueBtn').onclick=()=>location.href='campaign.html';
-document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>✦ Lore</b><br>'+lore;info.classList.remove('hidden')};
-document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>🎮 Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. No celular, use os controles da fase.';info.classList.remove('hidden')};
+document.getElementById('loadBtn').onclick=()=>showInfo('Carregar','O progresso da campanha fica disponível no mapa de fases. Escolha a fase desbloqueada para continuar.');
+document.getElementById('loreBtn').onclick=()=>showInfo('✦ Lore','Em um cantinho escondido do jardim existe um pequeno mundo de hamsters. Quando uma energia misteriosa começa a corromper os caminhos, Zip Zip parte para descobrir a origem do desequilíbrio.');
+document.getElementById('howBtn').onclick=()=>showInfo('🎮 Como jogar','No celular, use os botões da fase. No PC: A/D ou ←/→ para andar e Espaço, W ou ↑ para pular.');
 </script>
 </body>
 </html>
