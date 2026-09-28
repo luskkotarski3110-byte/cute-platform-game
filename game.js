@@ -6,8 +6,6 @@ const touch = { left:false, right:false };
 let paused = false;
 let finished = false;
 let last = performance.now();
-let anim = 2;
-let animTimer = 0;
 
 const sprite = new Image();
 sprite.src = 'assets/zipzip_phase1_player_sheet.png?v=zipzip-sprite-2';
@@ -115,11 +113,6 @@ function update(dt) {
     }
   }
 
-  animTimer += dt;
-  if (animTimer > 0.14) {
-    anim = anim === 1 ? 2 : 1;
-    animTimer = 0;
-  }
 }
 
 function drawBackground() {
@@ -127,14 +120,14 @@ function drawBackground() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   if (background.complete && background.naturalWidth) {
-    ctx.save();
-    // Reduz o aspecto "estourado" sem mudar a composição da arte.
-    ctx.filter = 'brightness(0.88) contrast(1.08) saturate(0.96)';
-    // A arte é pixel-art e foi preparada em 480x270, exatamente metade do canvas.
-    // Escala 2x sem interpolação para manter os pixels nítidos e evitar o aspecto borrado.
-    ctx.imageSmoothingEnabled = false;
+    // Interpolação suave deixa a arte comprimida mais limpa no celular.
+    ctx.imageSmoothingEnabled = true;
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-    ctx.restore();
+
+    // Escurecimento leve feito por uma camada simples, sem ctx.filter,
+    // para evitar travadas de renderização em celulares.
+    ctx.fillStyle = 'rgba(20, 8, 32, 0.08)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 }
 
@@ -176,15 +169,17 @@ function drawPlayer() {
     return;
   }
 
-  // Personagem grande e estável, como em um plataforma 2D.
-  // Usamos somente poses semelhantes para não dar a impressão de que ele "vira" de lado.
-  ctx.imageSmoothingEnabled = false;
+  // Pose única durante o movimento: elimina a sensação de virar/tremular.
+  // Coordenadas inteiras evitam microdeslocamentos visuais no canvas.
+  ctx.imageSmoothingEnabled = true;
   const size = 146;
-  const frame = player.vx === 0 ? 2 : anim;
+  const frame = 2;
+  const drawX = Math.round(player.x - 40);
+  const drawY = Math.round(player.y - 36);
   ctx.drawImage(
     sprite,
     frame * 32, 0, 32, 32,
-    player.x - 40, player.y - 36, size, size
+    drawX, drawY, size, size
   );
 }
 
@@ -248,21 +243,29 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
 
     if (action === 'jump') {
       jump();
-    } else {
-      touch[action] = true;
+      return;
+    }
+
+    // Só uma direção pode ficar ativa por vez.
+    if (action === 'left') {
+      touch.left = true;
+      touch.right = false;
+    } else if (action === 'right') {
+      touch.right = true;
+      touch.left = false;
     }
   };
 
   const release = e => {
     e.preventDefault();
-    if (action !== 'jump') touch[action] = false;
+    if (action === 'left') touch.left = false;
+    if (action === 'right') touch.right = false;
   };
 
   btn.addEventListener('pointerdown', press, {passive:false});
   btn.addEventListener('pointerup', release, {passive:false});
   btn.addEventListener('pointercancel', release, {passive:false});
   btn.addEventListener('lostpointercapture', release, {passive:false});
-  btn.addEventListener('pointerleave', release, {passive:false});
 });
 
 addEventListener('blur', () => {
