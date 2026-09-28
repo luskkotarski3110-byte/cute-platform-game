@@ -3,18 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>A Coroa Perdida</title>
+<meta name="theme-color" content="#7b315f">
+<title>Zip Zip — Aventura dos Hamsters</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main>
 <section id="menu" class="menu">
-  <div class="menu-scene" aria-hidden="true"><div class="moon"></div><div class="cloud cloud-a"></div><div class="cloud cloud-b"></div><div class="hill hill-back"></div><div class="hill hill-front"></div><div class="flower flower-a">✿</div><div class="flower flower-b">✿</div><div class="flower flower-c">✿</div></div>
+  <div class="menu-art" aria-hidden="true"></div>
+  <div class="menu-glow" aria-hidden="true"></div>
   <div class="menu-content">
-    <div class="game-mark"><span>✦</span><div class="crown">♕</div><span>✦</span></div>
-    <p class="eyebrow">UMA AVENTURA EM MINIATURA</p>
-    <h1>A Coroa <em>Perdida</em></h1>
-    <p class="tagline">Um pequeno herói. Um mundo enorme. Uma coroa desaparecida.</p>
+    <div class="game-mark"><span>✦</span><div class="zip-icon">🐹</div><span>✦</span></div>
+    <p class="eyebrow">UMA AVENTURA DE HAMSTERS TREVOSOS</p>
+    <h1><span>Zip</span> <em>Zip</em></h1>
+    <p class="tagline">Pequenos heróis. Um mundo encantado. Uma aventura maior do que parece.</p>
     <div class="menu-buttons">
       <button id="startBtn" class="primary">Novo jogo <span>›</span></button>
       <button id="continueBtn" class="secondary">Continuar</button>
@@ -22,17 +24,17 @@
       <button id="howBtn" class="secondary">Como jogar</button>
     </div>
     <div id="info" class="info hidden"></div>
-    <p class="version">A COROA PERDIDA • PRÓLOGO</p>
+    <p class="version">ZIP ZIP • AVENTURA EM MINIATURA</p>
   </div>
 </section>
 </main>
 <script>
-const lore='Há muito tempo, a pequena Rainha guardava uma coroa que não era apenas um símbolo. Ela mantinha o equilíbrio entre os lugares do reino. Certa manhã, a coroa desapareceu. Desde então, caminhos mudaram, criaturas estranhas apareceram e partes do reino ficaram isoladas.';
+const lore='Em um cantinho escondido do jardim existe um pequeno mundo de hamsters. Quando uma energia misteriosa começa a corromper os caminhos e transformar lugares encantados, Zip Zip parte em uma aventura para descobrir a origem do desequilíbrio. Entre jardins, bosques e vilas, cada pista revela um pouco mais sobre a história.';
 const info=document.getElementById('info');
 document.getElementById('startBtn').onclick=()=>location.href='campaign.html?new=1';
 document.getElementById('continueBtn').onclick=()=>location.href='campaign.html';
 document.getElementById('loreBtn').onclick=()=>{info.innerHTML='<b>Lore</b><br>'+lore;info.classList.remove('hidden')};
-document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. Explore, enfrente inimigos e recupere a Coroa Real.';info.classList.remove('hidden')};
+document.getElementById('howBtn').onclick=()=>{info.innerHTML='<b>Como jogar</b><br>Ande com A/D ou ←/→. Pule com Espaço, W ou ⬆. Explore, enfrente criaturas e descubra os segredos do mundo de Zip Zip.';info.classList.remove('hidden')};
 </script>
 </body>
 </html>
