@@ -5,6 +5,8 @@ const keys={},touch={left:false,right:false,jump:false};
 let state='story',last=performance.now(),frame=0,frameTimer=0,score=0;
 const bg=new Image(); bg.src='assets/zipzip_jardim.webp';
 const sprite=new Image(); sprite.src='assets/zipzip_phase1_player_sheet.png';
+// Personagem principal: ratinho fofo desenhado em canvas para funcionar mesmo quando o PNG não carrega.
+const ratPalette={body:'#d9a477',ear:'#efb9b5',inner:'#a96f6a',belly:'#f2c7a1',eye:'#2b1833',nose:'#6d3d46',scarf:'#9b5de5'};
 
 const platforms=[
   {x:0,y:285,w:158,h:35,name:'Ilha esquerda'},
@@ -180,12 +182,45 @@ function drawBackground(){
   if(bg.complete&&bg.naturalWidth)ctx.drawImage(bg,0,0,960,540);
   else {ctx.fillStyle='#8b4bd1';ctx.fillRect(0,0,960,540)}
 }
+function drawRat(x,y,scale=1,flip=1,playerRat=false){
+  ctx.save();
+  ctx.translate(x+(flip<0?52*scale:0),y);
+  ctx.scale(flip*scale,scale);
+  // sombra
+  ctx.globalAlpha=.18;ctx.fillStyle='#3b2145';
+  ctx.beginPath();ctx.ellipse(26,67,22,6,0,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+  // cauda
+  ctx.strokeStyle='#a96f6a';ctx.lineWidth=3;
+  ctx.beginPath();ctx.moveTo(9,51);ctx.bezierCurveTo(-10,57,-7,39,4,40);ctx.stroke();
+  // orelhas
+  ctx.fillStyle=ratPalette.ear;
+  ctx.beginPath();ctx.arc(14,14,11,0,Math.PI*2);ctx.arc(38,14,11,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=ratPalette.inner;
+  ctx.beginPath();ctx.arc(14,14,6,0,Math.PI*2);ctx.arc(38,14,6,0,Math.PI*2);ctx.fill();
+  // corpo e barriga
+  ctx.fillStyle=ratPalette.body;ctx.beginPath();ctx.ellipse(26,43,21,25,0,0,Math.PI*2);ctx.fill();
+  ctx.fillStyle=ratPalette.belly;ctx.beginPath();ctx.ellipse(26,47,12,16,0,0,Math.PI*2);ctx.fill();
+  // cabeça
+  ctx.fillStyle=ratPalette.body;ctx.beginPath();ctx.arc(26,28,20,0,Math.PI*2);ctx.fill();
+  // olhos
+  ctx.fillStyle=ratPalette.eye;
+  ctx.beginPath();ctx.arc(19,27,3.5,0,Math.PI*2);ctx.arc(33,27,3.5,0,Math.PI*2);ctx.fill();
+  // focinho
+  ctx.fillStyle=ratPalette.nose;ctx.beginPath();ctx.arc(26,35,3,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#6d3d46';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(26,37);ctx.lineTo(26,40);ctx.moveTo(26,39);ctx.lineTo(21,38);ctx.moveTo(26,39);ctx.lineTo(31,38);ctx.stroke();
+  // lenço do protagonista
+  if(playerRat){
+    ctx.fillStyle=ratPalette.scarf;
+    ctx.beginPath();ctx.moveTo(9,39);ctx.quadraticCurveTo(26,45,43,39);ctx.lineTo(40,47);ctx.quadraticCurveTo(26,52,12,47);ctx.closePath();ctx.fill();
+  }
+  // pezinhos
+  ctx.fillStyle='#b77f69';ctx.beginPath();ctx.ellipse(17,66,7,4,0,0,Math.PI*2);ctx.ellipse(35,66,7,4,0,0,Math.PI*2);ctx.fill();
+  ctx.restore();
+}
 function drawPlayer(){
   if(player.inv>0&&Math.floor(player.inv*12)%2===0)return;
-  if(sprite.complete&&sprite.naturalWidth){
-    ctx.imageSmoothingEnabled=false;
-    ctx.drawImage(sprite,frame*32,0,32,32,player.x-18,player.y-10,88,88);
-  }
+  drawRat(player.x-1,player.y-2,1.18,player.vx<0?-1:1,true);
 }
 function drawFragment(f){
   ctx.save();ctx.translate(f.x,f.y);ctx.rotate(Math.sin(performance.now()/300+f.x)*.12);
@@ -195,9 +230,7 @@ function drawFragment(f){
   ctx.closePath();ctx.fill();ctx.stroke();ctx.restore();
 }
 function drawEnemy(e){
-  ctx.fillStyle='#4b315c';ctx.beginPath();ctx.arc(e.x+14,e.y+17,15,Math.PI,0);ctx.lineTo(e.x+28,e.y+30);ctx.lineTo(e.x,e.y+30);ctx.closePath();ctx.fill();
-  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(e.x+9,e.y+15,4,0,7);ctx.arc(e.x+19,e.y+15,4,0,7);ctx.fill();
-  ctx.fillStyle='#2b1833';ctx.fillRect(e.x+8,e.y+15,3,3);ctx.fillRect(e.x+18,e.y+15,3,3);
+  drawRat(e.x,e.y,0.78,e.vx<0?-1:1,false);
 }
 function draw(){
   ctx.clearRect(0,0,960,540);
@@ -209,6 +242,24 @@ function draw(){
   for(const e of enemies)if(e.alive)drawEnemy(e);
   ctx.fillStyle='#f7e6ef';ctx.fillRect(goal.x,goal.y,4,60);
   ctx.fillStyle='#ff79b7';ctx.beginPath();ctx.moveTo(goal.x+4,goal.y);ctx.lineTo(goal.x+30,goal.y+9);ctx.lineTo(goal.x+4,goal.y+18);ctx.closePath();ctx.fill();
+  // elementos visuais do Jardim Encantado alinhados às plataformas
+  ctx.save();
+  for(const p of platforms){
+    ctx.fillStyle='rgba(82,48,112,.18)';ctx.fillRect(p.x,p.y,p.w,5);
+    if(p.w>60){
+      ctx.fillStyle='#79b85b';
+      for(let x=p.x+18;x<p.x+p.w-8;x+=42){
+        ctx.beginPath();ctx.ellipse(x,p.y-8,10,4,-.35,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.ellipse(x+8,p.y-13,8,4,.35,0,Math.PI*2);ctx.fill();
+      }
+    }
+  }
+  for(const o of solidObstacles){
+    ctx.fillStyle=o.type==='log'?'#8b5a3c':'#81758d';
+    ctx.beginPath();ctx.roundRect(o.x,o.y,o.w,o.h,8);ctx.fill();
+    if(o.type==='log'){ctx.strokeStyle='#c48a5c';ctx.lineWidth=3;ctx.stroke();}
+  }
+  ctx.restore();
   drawPlayer();
   ctx.fillStyle='rgba(45,19,60,.70)';ctx.fillRect(14,14,280,42);
   ctx.fillStyle='#fff';ctx.font='16px system-ui';
@@ -218,6 +269,6 @@ function loop(now){
   const dt=Math.min((now-last)/1000,.033);last=now;
   update(dt);draw();requestAnimationFrame(loop);
 }
-$('storyText').innerHTML='<h2>Fase 1 · Jardim Encantado</h2><p>Agora o cenário é o Jardim Encantado da arte enviada.</p><p>O tronco, plataformas, pedras e criaturas têm colisão e comportamento próprios. Colete os quatro fragmentos para liberar a bandeira final.</p>';
+$('storyText').innerHTML='<h2>Fase 1 · Jardim Encantado</h2><p>Agora o Jardim Encantado está pronto para exploração com um ratinho jogável.</p><p>Pedras, troncos e plataformas têm colisão; plantas viram degraus visuais; os ratinhos se movem e podem ser atravessados/jumpados. Colete os quatro fragmentos para liberar a bandeira final.</p>';
 resetLevel();
 requestAnimationFrame(loop);
