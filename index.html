@@ -12,10 +12,10 @@
 .menu-overlay{position:absolute;inset:0;background:rgba(25,8,38,.12);z-index:1;pointer-events:none}
 .menu-art{position:relative;z-index:2;width:min(94vw,440px);max-height:96svh;display:flex;align-items:center;justify-content:center}
 .menu-art img{display:block;width:100%;height:auto;max-height:96svh;object-fit:contain;filter:drop-shadow(0 18px 38px rgba(20,5,35,.4))}
-.menu-hit{position:absolute;left:24%;width:52%;height:7.5%;border:0;background:transparent;padding:0;cursor:pointer;z-index:4;border-radius:999px}
-.hit-new{top:57.5%}.hit-continue{top:65.1%}.hit-shop{top:72.7%}.hit-how{top:81.1%}
+.menu-hit{position:absolute;left:24%;width:52%;height:6.8%;border:0;background:transparent;padding:0;cursor:pointer;z-index:4;border-radius:999px}
+.hit-new{top:57.1%}.hit-continue{top:65.7%}.hit-shop{top:74.2%}.hit-how{top:82.5%}
 .menu-hit:active{transform:scale(.985)}
-.shop-label{position:absolute;left:24%;width:52%;top:72.7%;height:7.5%;z-index:3;display:flex;align-items:center;justify-content:center;pointer-events:none;border-radius:999px;background:linear-gradient(#fff,#eee7ff);border:3px solid #8660d7;box-shadow:inset 0 2px 0 rgba(255,255,255,.9),0 2px 0 rgba(91,52,153,.35);color:#5b35bd;font-weight:900;font-size:clamp(14px,4.2vw,20px)}
+
 #info{position:fixed;z-index:20;left:50%;bottom:18px;transform:translateX(-50%);width:min(88vw,430px);padding:16px 18px;border-radius:22px;background:rgba(43,19,60,.97);border:1px solid rgba(255,220,245,.3);box-shadow:0 15px 40px rgba(0,0,0,.38);color:#fff;text-align:center;font-size:14px;line-height:1.55}
 #info button{margin-top:10px;border:0;border-radius:999px;padding:8px 18px;background:#ffc0df;color:#4a214f;font-weight:900}.hidden{display:none!important}
 </style>
@@ -26,8 +26,8 @@
 <img class="menu-background" src="assets/zipzip-bg.png" alt="">
 <div class="menu-overlay"></div>
 <div class="menu-art">
-<img src="assets/zipzip-menu.webp" alt="Menu do Zip Zip">
-<div class="shop-label">▣ &nbsp; Loja</div>
+<img src="assets/zipzip_menu_panel.webp" alt="Menu do Zip Zip">
+
 <button class="menu-hit hit-new" id="startBtn" aria-label="Novo jogo"></button>
 <button class="menu-hit hit-continue" id="continueBtn" aria-label="Continuar"></button>
 <button class="menu-hit hit-shop" id="shopBtn" aria-label="Loja"></button>
@@ -41,7 +41,7 @@ const info=document.getElementById('info');
 function showInfo(title,msg){info.innerHTML='<strong>'+title+'</strong><br>'+msg+'<br><button id="closeInfo">Fechar</button>';info.classList.remove('hidden');document.getElementById('closeInfo').onclick=()=>info.classList.add('hidden')}
 document.getElementById('startBtn').onclick=()=>location.href='campaign.html?new=1';
 document.getElementById('continueBtn').onclick=()=>location.href='campaign.html';
-document.getElementById('shopBtn').onclick=()=>showInfo('Loja','A loja do Zip Zip ainda está em desenvolvimento.');
+document.getElementById('shopBtn').onclick=(e)=>{e.preventDefault();showInfo('Loja','A loja do Zip Zip ainda está em desenvolvimento.');};
 document.getElementById('howBtn').onclick=()=>showInfo('Como jogar','No celular, use os botões da fase. No PC: A/D ou setas para andar e Espaço, W ou ↑ para pular.');
 </script>
 </body>
