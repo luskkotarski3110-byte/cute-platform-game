@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540">
+<defs>
+<linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7464d2"/><stop offset=".52" stop-color="#b78be0"/><stop offset="1" stop-color="#f1c3e4"/></linearGradient>
+<linearGradient id="stone" x2="0" y2="1"><stop stop-color="#a893a9"/><stop offset="1" stop-color="#554c6b"/></linearGradient>
+<linearGradient id="moss" x2="0" y2="1"><stop stop-color="#bce67c"/><stop offset="1" stop-color="#4e8d50"/></linearGradient>
+<linearGradient id="water" x2="0" y2="1"><stop stop-color="#b9e8ef"/><stop offset="1" stop-color="#6fb9d5"/></linearGradient>
+<filter id="blur"><feGaussianBlur stdDeviation="9"/></filter>
+</defs>
+<rect width="1200" height="540" fill="url(#sky)"/>
+<!-- dreamy distant mountains/clouds -->
+<g fill="#f4d5ef" opacity=".62">
+<path d="M0 145Q70 72 145 142Q205 62 285 145Q350 110 420 170V230H0Z"/>
+<path d="M800 150Q870 70 945 140Q1010 65 1085 145Q1140 105 1200 160V225H800Z"/>
+</g>
+<g fill="#d6b6dd" opacity=".45">
+<path d="M0 285L150 175 300 285 430 190 570 285 720 165 900 285 1050 185 1200 280V420H0Z"/>
+</g>
+<!-- floating ruins in the distance -->
+<g opacity=".75">
+<g transform="translate(70 110)"><path d="M0 0h70v120H0z" fill="#9c82a8"/><path d="M-8 0l43-55L78 0Z" fill="#74618f"/><path d="M18 30h18v35H18zM45 30h18v35H45z" fill="#e4bfe3"/></g>
+<g transform="translate(1010 105)"><path d="M0 0h70v120H0z" fill="#9c82a8"/><path d="M-8 0l43-55L78 0Z" fill="#74618f"/></g>
+</g>
+<!-- central magical castle -->
+<g transform="translate(470 62)">
+<path d="M45 115h230v165H45z" fill="#d8c5dc" stroke="#7c6a91" stroke-width="6"/>
+<g fill="#8d76a0" stroke="#6d5a82" stroke-width="5">
+<path d="M25 115V10h58v105Z"/><path d="M112 115V-20h62v135Z"/><path d="M205 115V8h58v107Z"/>
+<path d="M25 10l29-72 29 72Z"/><path d="M112 -20l31-78 31 78Z"/><path d="M205 8l29-72 29 72Z"/>
+</g>
+<g fill="#765d91"><rect x="61" y="145" width="34" height="54" rx="10"/><rect x="139" y="145" width="34" height="54" rx="10"/><rect x="217" y="145" width="34" height="54" rx="10"/></g>
+<rect x="138" y="202" width="40" height="78" rx="18" fill="#71588b"/>
+</g>
+<!-- large floating islands -->
+<g stroke="#675779" stroke-width="4">
+<path d="M25 275Q120 220 225 275L205 390Q130 445 48 395Z" fill="url(#stone)"/>
+<path d="M0 275Q115 220 245 275Q180 305 120 290Q55 310 0 275Z" fill="url(#moss)"/>
+<path d="M290 300Q390 245 500 300L480 420Q395 465 315 415Z" fill="url(#stone)"/>
+<path d="M265 300Q390 245 525 300Q455 330 395 313Q330 335 265 300Z" fill="url(#moss)"/>
+<path d="M720 285Q825 225 940 285L920 410Q835 465 745 405Z" fill="url(#stone)"/>
+<path d="M690 285Q825 225 970 285Q900 320 835 300Q760 325 690 285Z" fill="url(#moss)"/>
+<path d="M990 255Q1090 210 1200 255V390Q1110 430 1015 385Z" fill="url(#stone)"/>
+<path d="M970 255Q1090 210 1200 255Q1140 285 1080 270Q1025 292 970 255Z" fill="url(#moss)"/>
+</g>
+<!-- waterfalls -->
+<g fill="url(#water)" opacity=".85">
+<path d="M160 295Q178 330 170 425Q165 475 190 515Q208 470 197 420L205 295Z"/>
+<path d="M445 320Q460 350 452 440Q447 475 468 500Q482 465 474 430L480 320Z"/>
+<path d="M865 305Q880 340 872 440Q868 480 890 515Q906 475 898 430L905 305Z"/>
+<path d="M1120 275Q1135 305 1128 390Q1125 425 1142 450Q1155 420 1148 380L1155 275Z"/>
+</g>
+<!-- lush flowering shrubs -->
+<g fill="#548d4f"><ellipse cx="75" cy="315" rx="55" ry="22"/><ellipse cx="125" cy="335" rx="70" ry="25"/><ellipse cx="1030" cy="310" rx="65" ry="23"/><ellipse cx="1090" cy="330" rx="75" ry="26"/><ellipse cx="390" cy="330" rx="55" ry="20"/><ellipse cx="815" cy="325" rx="60" ry="22"/></g>
+<g fill="#f6b4d5" stroke="#a86a98" stroke-width="3">
+<g transform="translate(100 300)"><circle r="14"/><circle cx="-18" cy="9" r="14"/><circle cx="18" cy="9" r="14"/><circle cy="3" r="14"/></g>
+<g transform="translate(1080 295)"><circle r="14"/><circle cx="-18" cy="9" r="14"/><circle cx="18" cy="9" r="14"/><circle cy="3" r="14"/></g>
+<g transform="translate(385 315)"><circle r="12"/><circle cx="-16" cy="8" r="12"/><circle cx="16" cy="8" r="12"/><circle cy="2" r="12"/></g>
+</g>
+<g fill="#ffe78c"><circle cx="100" cy="303" r="6"/><circle cx="1080" cy="298" r="6"/><circle cx="385" cy="318" r="5"/></g>
+<!-- foreground mist/water -->
+<path d="M0 455Q180 410 360 462T700 455T950 448T1200 455V540H0Z" fill="#a8d8e2" opacity=".8"/>
+<!-- vines -->
+<g fill="none" stroke="#4f824e" stroke-width="7" stroke-linecap="round">
+<path d="M45 260q-5 70 25 105q20 20 0 55M205 270q-10 80 15 115M1010 250q15 80-15 125M1170 260q-5 80 20 120"/>
+</g>
+<!-- sparkles -->
+<g fill="#fff5ff"><path d="M260 185l8 19 19 8-19 8-8 19-8-19-19-8 19-8z"/><path d="M670 120l5 13 13 5-13 5-5 13-5-13-13-5 13-5z"/><circle cx="345" cy="90" r="4"/><circle cx="920" cy="165" r="4"/><circle cx="1130" cy="115" r="3"/></g>
+</svg>
