@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#8b58d6"/><stop offset=".55" stop-color="#c986df"/><stop offset="1" stop-color="#f2c4e9"/></linearGradient>
+ <linearGradient id="hill" x2="0" y2="1"><stop stop-color="#d7b4d9"/><stop offset="1" stop-color="#9b75ae"/></linearGradient>
+ <linearGradient id="ground" x2="0" y2="1"><stop stop-color="#d9ef9a"/><stop offset="1" stop-color="#8fc56d"/></linearGradient>
+</defs>
+<rect width="1200" height="540" fill="url(#sky)"/>
+<!-- soft clouds -->
+<g fill="#f8d9f2" opacity=".78">
+ <path d="M0 150Q55 92 120 140Q160 78 225 138Q280 130 315 184H0Z"/>
+ <path d="M870 145Q920 80 980 132Q1025 76 1090 135Q1150 118 1200 165V220H870Z"/>
+</g>
+<!-- distant enchanted forest -->
+<g opacity=".72">
+ <path d="M0 320Q90 245 180 320T360 315T540 320T720 300T900 315T1080 300T1200 315V470H0Z" fill="url(#hill)"/>
+ <g fill="#87a86f"><circle cx="95" cy="280" r="72"/><circle cx="175" cy="300" r="64"/><circle cx="380" cy="285" r="78"/><circle cx="470" cy="300" r="62"/><circle cx="760" cy="275" r="74"/><circle cx="850" cy="300" r="62"/><circle cx="1060" cy="275" r="78"/></g>
+</g>
+<!-- distant castle integrated into landscape -->
+<g transform="translate(490 125)">
+ <path d="M0 110h225v145H0z" fill="#dfc4d8" stroke="#81658e" stroke-width="5"/>
+ <path d="M-18 110l30-86 30 86zM52 110l30-112 30 112zM122 110l30-95 30 95zM192 110l30-80 30 80z" fill="#80609b" stroke="#66507d" stroke-width="5"/>
+ <g fill="#71568c"><rect x="28" y="145" width="30" height="45" rx="9"/><rect x="100" y="145" width="30" height="45" rx="9"/><rect x="172" y="145" width="30" height="45" rx="9"/></g>
+ <rect x="93" y="192" width="40" height="63" rx="18" fill="#73568b"/>
+</g>
+<!-- floating garden cliffs -->
+<g stroke="#6f587f" stroke-width="4">
+ <path d="M20 305Q105 260 205 305L188 410Q112 448 38 408Z" fill="#8b6b9f"/>
+ <path d="M0 305Q100 260 220 305Q165 330 110 316Q55 334 0 305Z" fill="url(#ground)"/>
+ <path d="M280 280Q360 240 450 280L438 370Q365 407 292 370Z" fill="#8a6a9e"/>
+ <path d="M260 280Q360 238 470 280Q420 305 365 292Q310 307 260 280Z" fill="url(#ground)"/>
+ <path d="M740 300Q825 255 930 300L915 405Q840 438 758 400Z" fill="#8a6a9e"/>
+ <path d="M720 300Q825 255 950 300Q890 328 835 312Q775 330 720 300Z" fill="url(#ground)"/>
+ <path d="M1010 270Q1090 235 1185 270L1175 375Q1100 410 1020 372Z" fill="#89699d"/>
+ <path d="M990 270Q1090 235 1200 270Q1140 298 1085 282Q1035 300 990 270Z" fill="url(#ground)"/>
+</g>
+<!-- waterfalls -->
+<g fill="#aee5ee" opacity=".82">
+ <path d="M170 322Q185 345 178 440Q174 475 190 505Q205 470 198 435L205 322Z"/>
+ <path d="M410 298Q424 325 418 405Q414 438 428 462Q442 430 435 400L442 298Z"/>
+ <path d="M890 315Q905 345 898 450Q895 480 910 510Q925 478 918 445L925 315Z"/>
+ <path d="M1150 285Q1162 315 1158 395Q1155 430 1170 455Q1182 425 1178 390L1182 285Z"/>
+</g>
+<!-- flowers -->
+<g fill="#f5a8d1" stroke="#9d658e" stroke-width="3">
+ <g transform="translate(72 294)"><circle r="13"/><circle cx="-17" cy="9" r="13"/><circle cx="17" cy="9" r="13"/><circle cy="2" r="13"/></g>
+ <g transform="translate(335 269)"><circle r="13"/><circle cx="-17" cy="9" r="13"/><circle cx="17" cy="9" r="13"/><circle cy="2" r="13"/></g>
+ <g transform="translate(805 287)"><circle r="13"/><circle cx="-17" cy="9" r="13"/><circle cx="17" cy="9" r="13"/><circle cy="2" r="13"/></g>
+ <g transform="translate(1080 257)"><circle r="13"/><circle cx="-17" cy="9" r="13"/><circle cx="17" cy="9" r="13"/><circle cy="2" r="13"/></g>
+</g>
+<g fill="#ffe58b"><circle cx="72" cy="296" r="6"/><circle cx="335" cy="271" r="6"/><circle cx="805" cy="289" r="6"/><circle cx="1080" cy="259" r="6"/></g>
+<!-- magic sparkles -->
+<g fill="#fff5ff"><path d="M260 175l7 18 18 7-18 7-7 18-7-18-18-7 18-7z"/><path d="M690 185l5 13 13 5-13 5-5 13-5-13-13-5 13-5z"/><circle cx="330" cy="130" r="4"/><circle cx="940" cy="180" r="4"/><circle cx="1120" cy="130" r="3"/></g>
+<!-- soft foreground meadow -->
+<path d="M0 465Q180 425 350 470T700 465T950 455T1200 465V540H0Z" fill="#b9df83"/>
+</svg>
