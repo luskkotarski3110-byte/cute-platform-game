@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+<defs>
+ <linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d7a8ee"/><stop offset="1" stop-color="#9d72c8"/></linearGradient>
+ <linearGradient id="tower" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f0d5bd"/><stop offset="1" stop-color="#b982a5"/></linearGradient>
+</defs>
+<!-- distant hills -->
+<path d="M0 330 Q130 250 260 320 T510 300 T760 315 T960 270 V540H0Z" fill="url(#hill)" opacity=".58"/>
+<path d="M0 390 Q150 320 300 385 T610 360 T960 350 V540H0Z" fill="#8f6bb5" opacity=".48"/>
+<!-- enchanted castle -->
+<g opacity=".82">
+ <path d="M655 170h180v190H655z" fill="url(#tower)" stroke="#765a82" stroke-width="5"/>
+ <path d="M638 172l28-75 28 75zM716 172l28-92 28 92zM794 172l28-70 28 70z" fill="#7b5b9a" stroke="#59446f" stroke-width="5"/>
+ <path d="M678 215h32v55h-32zM747 215h32v55h-32zM816 215h32v55h-32z" rx="8" fill="#73558f"/>
+ <circle cx="694" cy="229" r="7" fill="#f7d58c"/><circle cx="763" cy="229" r="7" fill="#f7d58c"/><circle cx="832" cy="229" r="7" fill="#f7d58c"/>
+ <path d="M735 360v-72q10-28 20 0v72" fill="#6f507e"/>
+</g>
+<!-- distant trees -->
+<g opacity=".72">
+ <path d="M92 360V245M170 360V220M520 365V240M570 365V205" stroke="#6a5577" stroke-width="18" stroke-linecap="round"/>
+ <circle cx="92" cy="235" r="70" fill="#7e9d75"/><circle cx="160" cy="205" r="82" fill="#91b37d"/>
+ <circle cx="515" cy="230" r="78" fill="#75966e"/><circle cx="570" cy="195" r="88" fill="#91b37d"/>
+</g>
+<!-- floating magic motes -->
+<g fill="#fff5ff" opacity=".75"><circle cx="110" cy="155" r="4"/><circle cx="340" cy="205" r="5"/><circle cx="470" cy="125" r="3"/><circle cx="900" cy="145" r="5"/></g>
+</svg>
