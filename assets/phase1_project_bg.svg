@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+<defs>
+ <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#7050c8"/><stop offset=".5" stop-color="#b879d9"/><stop offset="1" stop-color="#f1b8e8"/></linearGradient>
+ <linearGradient id="rock" x2="0" y2="1"><stop stop-color="#b9a1c8"/><stop offset="1" stop-color="#6f5a8d"/></linearGradient>
+ <linearGradient id="grass" x2="0" y2="1"><stop stop-color="#d5ee82"/><stop offset="1" stop-color="#6eae5d"/></linearGradient>
+ <linearGradient id="water" x2="0" y2="1"><stop stop-color="#d5efff"/><stop offset="1" stop-color="#82c9e6"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="7"/></filter>
+</defs>
+<rect width="960" height="540" fill="url(#sky)"/>
+<!-- dreamy clouds -->
+<g fill="#f6d6f2" opacity=".7">
+ <path d="M0 175Q45 120 100 165Q130 105 195 155Q240 150 260 205H0Z"/>
+ <path d="M650 110Q700 55 750 105Q790 45 855 105Q915 80 960 135V205H650Z"/>
+</g>
+<!-- moon -->
+<circle cx="810" cy="95" r="45" fill="#f4d8ff" opacity=".55"/>
+<!-- distant floating islands -->
+<g>
+ <path d="M80 205Q155 165 230 205L214 285Q155 315 96 278Z" fill="url(#rock)"/>
+ <path d="M70 205Q150 170 238 205Q210 230 155 218Q105 232 70 205Z" fill="url(#grass)"/>
+ <path d="M330 170Q395 135 465 170L450 250Q398 278 350 245Z" fill="url(#rock)"/>
+ <path d="M320 170Q398 132 472 170Q430 195 390 183Q350 197 320 170Z" fill="url(#grass)"/>
+ <path d="M610 205Q690 165 770 205L752 295Q690 325 628 285Z" fill="url(#rock)"/>
+ <path d="M600 205Q685 165 780 205Q740 232 685 218Q640 235 600 205Z" fill="url(#grass)"/>
+</g>
+<!-- waterfalls -->
+<g fill="url(#water)" opacity=".8">
+ <path d="M180 225Q195 250 185 380Q182 410 195 440Q210 405 205 370L214 225Z"/>
+ <path d="M430 190Q445 225 438 345Q435 385 450 415Q465 380 457 340L463 190Z"/>
+ <path d="M690 220Q705 255 700 395Q698 430 712 455Q728 415 720 385L728 220Z"/>
+</g>
+<!-- distant castle -->
+<g fill="#dfc6d8" stroke="#816a9b" stroke-width="5">
+ <path d="M470 150h180v150H470z"/>
+ <path d="M450 150l25-80 25 80zM515 150l25-105 25 105zM580 150l25-90 25 90z"/>
+ <rect x="520" y="220" width="28" height="80" rx="12" fill="#72598c"/>
+ <rect x="485" y="185" width="25" height="42" rx="8" fill="#72598c"/>
+ <rect x="610" y="185" width="25" height="42" rx="8" fill="#72598c"/>
+</g>
+<!-- nearer cliffs -->
+<g>
+ <path d="M0 365Q80 330 155 360L145 540H0Z" fill="url(#rock)"/>
+ <path d="M0 365Q75 325 165 360Q120 390 70 375Q35 390 0 365Z" fill="url(#grass)"/>
+ <path d="M245 390Q315 350 385 385L375 540H250Z" fill="url(#rock)"/>
+ <path d="M235 390Q315 350 395 385Q350 415 300 398Q270 412 235 390Z" fill="url(#grass)"/>
+ <path d="M760 365Q835 330 960 365V540H770Z" fill="url(#rock)"/>
+ <path d="M750 365Q840 325 960 365Q900 395 845 378Q795 395 750 365Z" fill="url(#grass)"/>
+</g>
+<!-- flowers on cliffs -->
+<g fill="#ffd0e6" stroke="#9e679a" stroke-width="2">
+ <circle cx="65" cy="345" r="9"/><circle cx="48" cy="353" r="9"/><circle cx="82" cy="353" r="9"/><circle cx="65" cy="360" r="7"/>
+ <circle cx="320" cy="365" r="9"/><circle cx="303" cy="373" r="9"/><circle cx="337" cy="373" r="9"/><circle cx="320" cy="380" r="7"/>
+ <circle cx="855" cy="345" r="9"/><circle cx="838" cy="353" r="9"/><circle cx="872" cy="353" r="9"/><circle cx="855" cy="360" r="7"/>
+</g>
+<g fill="#ffe68d"><circle cx="65" cy="353" r="4"/><circle cx="320" cy="373" r="4"/><circle cx="855" cy="353" r="4"/></g>
+<!-- sparkles -->
+<g fill="#fff4ff"><circle cx="270" cy="120" r="4"/><circle cx="555" cy="95" r="3"/><circle cx="900" cy="250" r="4"/><path d="M295 190l6 15 15 6-15 6-6 15-6-15-15-6 15-6z"/></g>
+<!-- lower water -->
+<path d="M0 480Q170 445 330 485T650 480T960 475V540H0Z" fill="url(#water)" opacity=".9"/>
+</svg>
