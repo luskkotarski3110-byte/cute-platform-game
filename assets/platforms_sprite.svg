@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="128" viewBox="0 0 512 128">
+<defs>
+ <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#d8f28a"/><stop offset=".45" stop-color="#79b957"/><stop offset="1" stop-color="#477a45"/></linearGradient>
+ <linearGradient id="stone" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8d887b"/><stop offset=".5" stop-color="#5c5b58"/><stop offset="1" stop-color="#383d3c"/></linearGradient>
+ <linearGradient id="wood" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b9824e"/><stop offset=".5" stop-color="#754a31"/><stop offset="1" stop-color="#4d3028"/></linearGradient>
+</defs>
+<!-- 0: pedra/grama -->
+<g transform="translate(0 0)">
+ <rect x="3" y="8" width="122" height="112" rx="12" fill="url(#stone)" stroke="#303533" stroke-width="4"/>
+ <path d="M2 12 Q20 0 38 10 T76 8 T126 11 L126 30 L2 30Z" fill="url(#grass)"/>
+ <path d="M8 43h108M12 72h104M8 99h108" stroke="#9d9a8e" stroke-opacity=".35" stroke-width="4"/>
+ <path d="M24 31v25M78 30v34M45 74v30M99 73v26" stroke="#303533" stroke-opacity=".45" stroke-width="4"/>
+ <path d="M15 7c3 9 2 17-2 25M47 5c4 8 4 15 0 25M92 6c4 8 3 15-2 24" stroke="#386c3f" stroke-width="5" stroke-linecap="round"/>
+</g>
+<!-- 1: ruína com flores -->
+<g transform="translate(128 0)">
+ <rect x="3" y="10" width="122" height="110" rx="12" fill="url(#stone)" stroke="#303533" stroke-width="4"/>
+ <path d="M2 13 Q28 1 50 11 T92 8 T126 13 L126 31 L2 31Z" fill="url(#grass)"/>
+ <path d="M17 54l12-8 12 9-8 9-14-3zM72 82l14-10 13 10-9 9-15-2z" fill="#8b897f" opacity=".7"/>
+ <path d="M25 12c-5 14-3 24 2 33M58 7c-4 13-3 23 3 34M100 9c-4 13-3 22 3 32" stroke="#4a8149" stroke-width="5" stroke-linecap="round"/>
+ <g fill="#f5a5c7"><circle cx="22" cy="7" r="5"/><circle cx="58" cy="4" r="5"/><circle cx="103" cy="6" r="5"/></g>
+</g>
+<!-- 2: madeira -->
+<g transform="translate(256 0)">
+ <rect x="3" y="20" width="122" height="100" rx="9" fill="url(#wood)" stroke="#3b2824" stroke-width="4"/>
+ <rect x="3" y="8" width="122" height="27" rx="8" fill="#6f432e" stroke="#382722" stroke-width="4"/>
+ <path d="M12 15h104M12 25h104M24 39v74M62 39v74M99 39v74" stroke="#d49b60" stroke-opacity=".35" stroke-width="4"/>
+ <path d="M14 8c5 8 8 13 6 22M47 8c4 7 7 13 5 22M83 8c5 7 8 13 6 22M112 8c4 7 6 13 5 22" stroke="#5b963f" stroke-width="5" stroke-linecap="round"/>
+</g>
+<!-- 3: pedra flutuante -->
+<g transform="translate(384 0)">
+ <path d="M8 16 Q28 5 51 12 Q76 2 103 12 Q119 10 124 21 L113 104 Q99 116 77 109 Q55 124 35 109 Q15 115 6 100Z" fill="url(#stone)" stroke="#303533" stroke-width="4"/>
+ <path d="M4 17 Q27 2 51 11 Q77 1 103 11 Q119 9 127 20 L124 37 Q98 27 76 35 Q51 27 28 37 Q14 31 4 37Z" fill="url(#grass)"/>
+ <path d="M29 51l12 9-8 12M82 48l14 11-9 14M56 79l13 10-8 12" stroke="#303533" stroke-opacity=".5" stroke-width="4"/>
+ <path d="M22 10c3 8 2 15-2 23M67 6c4 8 4 15 0 24M106 10c3 7 3 14-1 22" stroke="#3c7642" stroke-width="5" stroke-linecap="round"/>
+</g>
+</svg>
