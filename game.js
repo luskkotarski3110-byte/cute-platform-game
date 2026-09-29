@@ -40,22 +40,25 @@ background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-3';
 const fragmentSprite = new Image();
 fragmentSprite.src = 'assets/fragment_sprite.svg?v=fragment-1';
 
+const platformSprite = new Image();
+platformSprite.src = 'assets/platforms_sprite.svg?v=platforms-1';
+
 // Fase maior: os trechos antigos foram mantidos e novos caminhos foram adicionados.
 const platforms = [
-  {x:0,    y:390, w:260, h:24},
-  {x:300,  y:340, w:210, h:24},
-  {x:550,  y:420, w:270, h:24},
-  {x:650,  y:355, w:95,  h:18},
-  {x:850,  y:300, w:180, h:24},
-  {x:1060, y:370, w:220, h:24},
-  {x:1310, y:430, w:250, h:24},
-  {x:1440, y:350, w:95,  h:18},
-  {x:1600, y:300, w:230, h:24},
-  {x:1870, y:385, w:180, h:24},
-  {x:2080, y:325, w:220, h:24},
-  {x:2330, y:415, w:260, h:24},
-  {x:2620, y:350, w:170, h:24},
-  {x:2820, y:290, w:180, h:24}
+  {x:0,    y:390, w:260, h:24, kind:0},
+  {x:300,  y:340, w:210, h:24, kind:1},
+  {x:550,  y:420, w:270, h:24, kind:0},
+  {x:650,  y:355, w:95,  h:18, kind:3},
+  {x:850,  y:300, w:180, h:24, kind:1},
+  {x:1060, y:370, w:220, h:24, kind:0},
+  {x:1310, y:430, w:250, h:24, kind:2},
+  {x:1440, y:350, w:95,  h:18, kind:3},
+  {x:1600, y:300, w:230, h:24, kind:0},
+  {x:1870, y:385, w:180, h:24, kind:1},
+  {x:2080, y:325, w:220, h:24, kind:2},
+  {x:2330, y:415, w:260, h:24, kind:0},
+  {x:2620, y:350, w:170, h:24, kind:1},
+  {x:2820, y:290, w:180, h:24, kind:3}
 ];
 
 const fragment = { x:2920, y:235, collected:false };
@@ -278,12 +281,21 @@ function drawWorld() {
   ctx.fillRect(cameraX, 505, canvas.width, 35);
 
   for (const p of platforms) {
-    ctx.fillStyle = '#49333f';
-    ctx.fillRect(p.x, p.y, p.w, p.h);
-    ctx.fillStyle = '#79a85d';
-    ctx.fillRect(p.x, p.y, p.w, 7);
-    ctx.fillStyle = 'rgba(255,255,255,.10)';
-    ctx.fillRect(p.x + 8, p.y + 8, Math.max(0,p.w - 16), 3);
+    if (platformSprite.complete && platformSprite.naturalWidth) {
+      const srcX = p.kind * 128;
+      const srcY = 0;
+      const srcW = 128;
+      const srcH = 128;
+      const scaleX = p.w / srcW;
+      const scaleY = Math.max(p.h / 36, 0.34);
+      const drawH = Math.max(34, p.h * 2.7);
+      ctx.drawImage(platformSprite, srcX, srcY, srcW, srcH, p.x, p.y - (drawH - p.h), p.w, drawH);
+    } else {
+      ctx.fillStyle = '#49333f';
+      ctx.fillRect(p.x, p.y, p.w, p.h);
+      ctx.fillStyle = '#79a85d';
+      ctx.fillRect(p.x, p.y, p.w, 7);
+    }
   }
 
   for (const e of enemies) {
