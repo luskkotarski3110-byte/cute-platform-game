@@ -9,23 +9,28 @@ let last = performance.now();
 let walkTime = 0;
 let coyoteTime = 0;
 let jumpBuffer = 0;
+
 const MOVE_SPEED = 300;
 const GRAVITY = 1800;
 const JUMP_SPEED = -720;
 const COYOTE_WINDOW = 0.10;
 const JUMP_BUFFER_WINDOW = 0.12;
-const FRAME_W = 32;
-const FRAME_H = 32;
+
+const FRAME_W = 80;
+const FRAME_H = 80;
+const WALK_ROW = 0;
+const JUMP_ROW = 1;
+const DOWN_ROW = 2;
+const IDLE_ROW = 3;
 const WALK_FRAMES = [0,1,2,3,4];
+const ANIM_SPEED = 8;
 
 const sprite = new Image();
-sprite.src = 'assets/zipzip_phase1_player_sheet.png?v=zipzip-sprite-2';
+sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-final-1';
 
 const background = new Image();
 background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-2';
 
-// Uma única fase jogável: as superfícies invisíveis acompanham as pedras/ilhas da arte.
-// Não existem inimigos, bandeira final ou coleção de quatro fragmentos nesta fase.
 const platforms = [
   {x:0,   y:298, w:160, h:22},
   {x:177, y:370, w:180, h:24},
@@ -39,14 +44,18 @@ const fragment = { x:835, y:278, collected:false };
 
 let player = {
   x:34, y:218, w:58, h:76,
-  vx:0, vy:0, ground:false
+  vx:0, vy:0, ground:false,
+  dir:1, animFrame:0
 };
 
 function reset() {
-  player = {x:34,y:218,w:58,h:76,vx:0,vy:0,ground:false,wasGround:false,dir:1,animFrame:0};
+  player = {x:34,y:218,w:58,h:76,vx:0,vy:0,ground:false,dir:1,animFrame:0};
   fragment.collected = false;
   finished = false;
   paused = false;
+  walkTime = 0;
+  coyoteTime = 0;
+  jumpBuffer = 0;
   document.getElementById('pause').classList.add('hidden');
   document.getElementById('story').classList.add('hidden');
   updateObjective();
@@ -61,6 +70,7 @@ function jump() {
   if (!paused && !finished && (player.ground || coyoteTime > 0)) {
     player.vy = JUMP_SPEED;
     player.ground = false;
+    coyoteTime = 0;
     jumpBuffer = 0;
   }
 }
@@ -77,6 +87,8 @@ function respawn() {
   player.ground = false;
   player.dir = 1;
   player.animFrame = 0;
+  coyoteTime = 0;
+  jumpBuffer = 0;
 }
 
 function update(dt) {
@@ -84,12 +96,13 @@ function update(dt) {
 
   const left = leftPressed();
   const right = rightPressed();
+  const down = downPressed();
 
   if (left && !right) {
-    player.vx = -MOVE_SPEED;
+    player.vx = down ? -MOVE_SPEED * 0.35 : -MOVE_SPEED;
     player.dir = -1;
   } else if (right && !left) {
-    player.vx = MOVE_SPEED;
+    player.vx = down ? MOVE_SPEED * 0.35 : MOVE_SPEED;
     player.dir = 1;
   } else {
     player.vx = 0;
@@ -97,33 +110,45 @@ function update(dt) {
 
   if (player.ground) coyoteTime = COYOTE_WINDOW;
   else coyoteTime = Math.max(0, coyoteTime - dt);
-  jumpBuffer = Math.max(0, jumpBuffer - dt);
 
-  if (jumpBuffer > 0 && coyoteTime > 0 && !downPressed()) jump();
+  jumpBuffer = Math.max(0, jumpBuffer - dt);
+  if (jumpBuffer > 0 && coyoteTime > 0 && !down) jump();
 
   player.vy += GRAVITY * dt;
 
   const oldBottom = player.y + player.h;
-  player.x += player.vx * dt;
-  player.y += player.vy * dt;
-  player.wasGround = player.ground;
+  const nextX = player.x + player.vx * dt;
+  const nextY = player.y + player.vy * dt;
+  player.x = nextX;
+  player.y = nextY;
   player.ground = false;
 
-  for (const p of platforms) {
+  // Escolhe somente uma plataforma para pouso, evitando o personagem
+  // atravessar/oscilar quando duas superfícies ficam próximas.
+  if (player.vy >= 0) {
     const bottom = player.y + player.h;
-    const overlapsX = player.x + player.w - 10 > p.x && player.x + 10 < p.x + p.w;
-    const crossingTop = oldBottom <= p.y + 2 && bottom >= p.y && player.vy >= 0;
+    let landing = null;
 
-    if (overlapsX && crossingTop) {
-      player.y = p.y - player.h;
+    for (const p of platforms) {
+      const overlapsX = player.x + player.w - 10 > p.x && player.x + 10 < p.x + p.w;
+      const crossingTop = oldBottom <= p.y + 3 && bottom >= p.y;
+
+      if (overlapsX && crossingTop && (!landing || p.y < landing.y)) {
+        landing = p;
+      }
+    }
+
+    if (landing) {
+      player.y = landing.y - player.h;
       player.vy = 0;
       player.ground = true;
       coyoteTime = COYOTE_WINDOW;
     }
   }
 
-  if (Math.abs(player.vx) > 0 && player.ground) {
-    walkTime += dt * 10;
+  // O movimento e a animação são independentes: trocar de frame nunca altera X/Y.
+  if (player.ground && Math.abs(player.vx) > 1 && !down) {
+    walkTime += dt * ANIM_SPEED;
     player.animFrame = WALK_FRAMES[Math.floor(walkTime) % WALK_FRAMES.length];
   } else {
     walkTime = 0;
@@ -150,7 +175,6 @@ function update(dt) {
       story.classList.remove('hidden');
     }
   }
-
 }
 
 function drawBackground() {
@@ -158,12 +182,8 @@ function drawBackground() {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   if (background.complete && background.naturalWidth) {
-    // Interpolação suave deixa a arte comprimida mais limpa no celular.
     ctx.imageSmoothingEnabled = true;
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
-
-    // Escurecimento leve feito por uma camada simples, sem ctx.filter,
-    // para evitar travadas de renderização em celulares.
     ctx.fillStyle = 'rgba(20, 8, 32, 0.08)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
@@ -207,23 +227,38 @@ function drawPlayer() {
     return;
   }
 
-  // A sprite sheet atual é 5x1. Cada frame é uma pose do walk cycle.
-  // A direção é determinada pelo teclado: direita usa a orientação original,
-  // esquerda usa a mesma pose espelhada. Assim o personagem não troca de lado sozinho.
-  const size = 146;
-  const frame = player.ground ? player.animFrame : 2;
-  const drawX = Math.round(player.x - 44);
-  const drawY = Math.round(player.y - 35);
+  const down = downPressed() && player.ground;
+  const moving = player.ground && Math.abs(player.vx) > 1 && !down;
+
+  let row = IDLE_ROW;
+  let frame = 0;
+
+  if (!player.ground) {
+    row = JUMP_ROW;
+    frame = Math.max(0, Math.min(4, Math.floor((Math.abs(player.vy) / 720) * 4)));
+  } else if (down) {
+    row = DOWN_ROW;
+    frame = Math.floor(performance.now() / 120) % 5;
+  } else if (moving) {
+    row = WALK_ROW;
+    frame = player.animFrame;
+  }
+
+  const size = 112;
+  const drawX = Math.round(player.x - 27);
+  const drawY = Math.round(player.y - 38);
 
   ctx.save();
   ctx.imageSmoothingEnabled = true;
+
   if (player.dir < 0) {
     ctx.translate(drawX + size, drawY);
     ctx.scale(-1, 1);
-    ctx.drawImage(sprite, frame * FRAME_W, 0, FRAME_W, FRAME_H, 0, 0, size, size);
+    ctx.drawImage(sprite, frame * FRAME_W, row * FRAME_H, FRAME_W, FRAME_H, 0, 0, size, size);
   } else {
-    ctx.drawImage(sprite, frame * FRAME_W, 0, FRAME_W, FRAME_H, drawX, drawY, size, size);
+    ctx.drawImage(sprite, frame * FRAME_W, row * FRAME_H, FRAME_W, FRAME_H, drawX, drawY, size, size);
   }
+
   ctx.restore();
 }
 
@@ -258,7 +293,6 @@ document.getElementById('restartBtn').addEventListener('click', reset);
 document.getElementById('menuBtn').addEventListener('click', () => { location.href = 'index.html'; });
 document.getElementById('storyNext').addEventListener('click', () => { location.href = 'campaign.html'; });
 
-// Teclado
 addEventListener('keydown', e => {
   const k = e.key;
   if (k === 'Escape') {
@@ -278,7 +312,6 @@ addEventListener('keydown', e => {
 
 addEventListener('keyup', e => { keys[e.key] = false; });
 
-// Controles de celular: um único sistema de Pointer Events evita o bug de alternância.
 document.querySelectorAll('.touch-controls button').forEach(btn => {
   const action = btn.dataset.key;
 
@@ -297,7 +330,6 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
       return;
     }
 
-    // Só uma direção horizontal pode ficar ativa por vez.
     if (action === 'left') {
       touch.left = true;
       touch.right = false;
