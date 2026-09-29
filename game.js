@@ -145,7 +145,7 @@ function update(dt) {
 
       const story = document.getElementById('story');
       document.getElementById('storyText').innerHTML =
-        '<h2>✦ Fragmento encontrado!</h2><p>Você chegou ao alto das pedras do Jardim Encantado.</p><p>A Fase 1 terminou.</p>';
+        '<h2>✦ Memória despertada</h2><p>Ao alcançar o fragmento, Zip Zip percebe que aquilo não é apenas um pedaço da Coroa Real.</p><p>Uma memória da noite do desaparecimento atravessa o jardim: alguém quebrou a coroa de propósito.</p><p><strong>O primeiro caminho foi encontrado. O Bosque dos Cogumelos espera.</strong></p>';
       document.getElementById('storyNext').textContent = 'Voltar ao mapa';
       story.classList.remove('hidden');
     }
