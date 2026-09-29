@@ -43,6 +43,9 @@ fragmentSprite.src = 'assets/fragment_sprite.svg?v=fragment-1';
 const platformSprite = new Image();
 platformSprite.src = 'assets/platforms_sprite.svg?v=platforms-1';
 
+const enemySprite = new Image();
+enemySprite.src = 'assets/enemies_sprite.svg?v=enemies-1';
+
 // Fase maior: os trechos antigos foram mantidos e novos caminhos foram adicionados.
 const platforms = [
   {x:0,    y:390, w:260, h:24, kind:0},
@@ -303,20 +306,15 @@ function drawWorld() {
     const bob = Math.sin(performance.now()/160 + e.x) * 1.5;
     ctx.save();
     ctx.translate(e.x, e.y + bob);
-    ctx.fillStyle = '#6e355e';
-    ctx.beginPath();
-    ctx.roundRect(0, 8, e.w, e.h - 8, 10);
-    ctx.fill();
-    ctx.fillStyle = '#ffb7d8';
-    ctx.beginPath();
-    ctx.arc(11, 14, 5, 0, Math.PI*2);
-    ctx.arc(27, 14, 5, 0, Math.PI*2);
-    ctx.fill();
-    ctx.fillStyle = '#24152b';
-    ctx.beginPath();
-    ctx.arc(12, 15, 2, 0, Math.PI*2);
-    ctx.arc(28, 15, 2, 0, Math.PI*2);
-    ctx.fill();
+    if (enemySprite.complete && enemySprite.naturalWidth) {
+      const frame = Math.floor(performance.now() / 180) % 3;
+      ctx.drawImage(enemySprite, frame * 128, 0, 128, 96, 0, 0, e.w, e.h);
+    } else {
+      ctx.fillStyle = '#6e355e';
+      ctx.beginPath();
+      ctx.roundRect(0, 8, e.w, e.h - 8, 10);
+      ctx.fill();
+    }
     ctx.restore();
   }
 
