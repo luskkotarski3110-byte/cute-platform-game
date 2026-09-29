@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="384" height="64" viewBox="0 0 384 64">
+<defs>
+ <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff8a8"/><stop offset=".35" stop-color="#ffd43b"/><stop offset=".72" stop-color="#ff9b00"/><stop offset="1" stop-color="#fff06a"/></linearGradient>
+ <linearGradient id="c" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff8c8"/><stop offset=".55" stop-color="#ffd42d"/><stop offset="1" stop-color="#ff9d00"/></linearGradient>
+ <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<g fill="none" stroke="#fff7b0" stroke-width="1.5" opacity=".9">
+ <path d="M31 8C13 18 16 42 34 51"/><path d="M33 9C52 18 50 42 31 53"/>
+</g>
+<g transform="translate(0 0)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="18" cy="10" r="1.7" fill="#fff"/>
+ </g><g transform="translate(64 -2)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="46" cy="25" r="1.7" fill="#fff"/>
+ </g><g transform="translate(128 1)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="18" cy="40" r="1.7" fill="#fff"/>
+ </g><g transform="translate(192 2)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="46" cy="10" r="1.7" fill="#fff"/>
+ </g><g transform="translate(256 -1)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="18" cy="25" r="1.7" fill="#fff"/>
+ </g><g transform="translate(320 0)" filter="url(#glow)">
+ <polygon points="32,7 47,23 39,51 25,51 17,23" fill="url(#g)" stroke="#fff8c2" stroke-width="2"/>
+ <polygon points="32,11 39,24 32,45 25,24" fill="#fff1a0" opacity=".8"/>
+ <path d="M24 27 L32 20 L40 27 L37 30 L32 27 L27 30 Z" fill="url(#c)" stroke="#fff9bd" stroke-width="1"/>
+ <path d="M27 30 L32 27 L37 30 L36 35 L32 32 L28 35 Z" fill="#ffb400" opacity=".9"/>
+ <path d="M19 18 L24 15 M45 18 L40 15" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+ <circle cx="46" cy="40" r="1.7" fill="#fff"/>
+ </g>
+</svg>
