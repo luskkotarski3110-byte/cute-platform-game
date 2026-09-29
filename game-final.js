@@ -34,9 +34,9 @@ const sprite = new Image();
 sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
 
 const background = new Image();
-background.src = 'assets/phase1_final_bg.svg?v=final-bg-1';
+background.src = 'assets/zipzip_phase1_bg.jpg?v=project-base-1';
 const foreground = new Image();
-foreground.src = 'assets/phase1_final_fg.svg?v=final-fg-1';
+foreground.src = 'assets/phase1_project_fg.svg?v=project-fg-2';
 
 
 // Fragmento da Coroa: sprite sheet com 6 frames, brilho e símbolo da coroa.
