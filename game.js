@@ -9,10 +9,15 @@ let last = performance.now();
 let walkTime = 0;
 let coyoteTime = 0;
 let jumpBuffer = 0;
+let cameraX = 0;
 
-const MOVE_SPEED = 300;
+const WORLD_WIDTH = 3000;
+const MOVE_SPEED = 250;
+const GROUND_ACCEL = 1900;
+const AIR_ACCEL = 1250;
+const FRICTION = 2200;
 const GRAVITY = 1800;
-const JUMP_SPEED = -720;
+const JUMP_SPEED = -690;
 const COYOTE_WINDOW = 0.10;
 const JUMP_BUFFER_WINDOW = 0.12;
 
@@ -23,39 +28,64 @@ const JUMP_ROW = 1;
 const DOWN_ROW = 2;
 const IDLE_ROW = 3;
 const WALK_FRAMES = [0,1,2,3,4];
-const ANIM_SPEED = 8;
+const ANIM_SPEED = 9;
 
 const sprite = new Image();
-sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-final-1';
+sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-final-2';
 
 const background = new Image();
-background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-2';
+background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-3';
 
+// Fase maior: os trechos antigos foram mantidos e novos caminhos foram adicionados.
 const platforms = [
-  {x:0,   y:298, w:160, h:22},
-  {x:177, y:370, w:180, h:24},
-  {x:365, y:426, w:305, h:24},
-  {x:410, y:374, w:78,  h:18},
-  {x:585, y:310, w:70,  h:18},
-  {x:662, y:324, w:298, h:24}
+  {x:0,    y:390, w:260, h:24},
+  {x:300,  y:340, w:210, h:24},
+  {x:550,  y:420, w:270, h:24},
+  {x:650,  y:355, w:95,  h:18},
+  {x:850,  y:300, w:180, h:24},
+  {x:1060, y:370, w:220, h:24},
+  {x:1310, y:430, w:250, h:24},
+  {x:1440, y:350, w:95,  h:18},
+  {x:1600, y:300, w:230, h:24},
+  {x:1870, y:385, w:180, h:24},
+  {x:2080, y:325, w:220, h:24},
+  {x:2330, y:415, w:260, h:24},
+  {x:2620, y:350, w:170, h:24},
+  {x:2820, y:290, w:180, h:24}
 ];
 
-const fragment = { x:835, y:278, collected:false };
+const fragment = { x:2920, y:235, collected:false };
+
+// Inimigos simples e leves: patrulham plataformas e podem ser derrotados pulando sobre eles.
+const enemies = [
+  {x:385,  y:304, w:38, h:36, vx:55,  left:320,  right:480, alive:true},
+  {x:735,  y:384, w:38, h:36, vx:-65, left:575, right:780, alive:true},
+  {x:930,  y:264, w:38, h:36, vx:60,  left:875,  right:1000, alive:true},
+  {x:1160, y:334, w:38, h:36, vx:-70, left:1080, right:1260, alive:true},
+  {x:1510, y:314, w:38, h:36, vx:65, left:1450, right:1525, alive:true},
+  {x:1710, y:264, w:38, h:36, vx:-75, left:1620, right:1810, alive:true},
+  {x:1950, y:349, w:38, h:36, vx:60, left:1890, right:2020, alive:true},
+  {x:2200, y:289, w:38, h:36, vx:-70, left:2100, right:2280, alive:true},
+  {x:2420, y:379, w:38, h:36, vx:75, left:2350, right:2550, alive:true},
+  {x:2680, y:314, w:38, h:36, vx:-65, left:2640, right:2770, alive:true}
+];
 
 let player = {
-  x:34, y:218, w:58, h:76,
+  x:34, y:314, w:58, h:76,
   vx:0, vy:0, ground:false,
   dir:1, animFrame:0
 };
 
 function reset() {
-  player = {x:34,y:218,w:58,h:76,vx:0,vy:0,ground:false,dir:1,animFrame:0};
+  player = {x:34,y:314,w:58,h:76,vx:0,vy:0,ground:false,dir:1,animFrame:0};
   fragment.collected = false;
+  for (const e of enemies) e.alive = true;
   finished = false;
   paused = false;
   walkTime = 0;
   coyoteTime = 0;
   jumpBuffer = 0;
+  cameraX = 0;
   document.getElementById('pause').classList.add('hidden');
   document.getElementById('story').classList.add('hidden');
   updateObjective();
@@ -63,7 +93,7 @@ function reset() {
 
 function updateObjective() {
   document.getElementById('objective').textContent =
-    fragment.collected ? 'Fragmento encontrado! ✦' : 'Suba pelas pedras até o fragmento ✦';
+    fragment.collected ? 'Fragmento encontrado! ✦' : 'Encontre o fragmento ✦';
 }
 
 function jump() {
@@ -80,8 +110,9 @@ function rightPressed() { return !!(keys.ArrowRight || keys.d || touch.right); }
 function downPressed() { return !!(keys.ArrowDown || keys.s || touch.down); }
 
 function respawn() {
-  player.x = 34;
-  player.y = 218;
+  player.x = Math.max(34, cameraX + 34);
+  if (player.x > 180) player.x = 34;
+  player.y = 314;
   player.vx = 0;
   player.vy = 0;
   player.ground = false;
@@ -91,6 +122,40 @@ function respawn() {
   jumpBuffer = 0;
 }
 
+function approach(value, target, amount) {
+  if (value < target) return Math.min(value + amount, target);
+  if (value > target) return Math.max(value - amount, target);
+  return target;
+}
+
+function hit(a,b) {
+  return a.x < b.x + b.w && a.x + a.w > b.x &&
+         a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+function updateEnemies(dt) {
+  for (const e of enemies) {
+    if (!e.alive) continue;
+    e.x += e.vx * dt;
+    if (e.x <= e.left) { e.x = e.left; e.vx = Math.abs(e.vx); }
+    if (e.x + e.w >= e.right) { e.x = e.right - e.w; e.vx = -Math.abs(e.vx); }
+
+    if (hit(player,e)) {
+      const playerBottom = player.y + player.h;
+      const enemyTop = e.y;
+      if (player.vy > 120 && playerBottom - enemyTop < 26) {
+        e.alive = false;
+        player.y = e.y - player.h;
+        player.vy = -390;
+        player.ground = false;
+      } else {
+        respawn();
+        return;
+      }
+    }
+  }
+}
+
 function update(dt) {
   if (paused || finished) return;
 
@@ -98,14 +163,20 @@ function update(dt) {
   const right = rightPressed();
   const down = downPressed();
 
+  let target = 0;
   if (left && !right) {
-    player.vx = down ? -MOVE_SPEED * 0.35 : -MOVE_SPEED;
+    target = down ? -MOVE_SPEED * 0.42 : -MOVE_SPEED;
     player.dir = -1;
   } else if (right && !left) {
-    player.vx = down ? MOVE_SPEED * 0.35 : MOVE_SPEED;
+    target = down ? MOVE_SPEED * 0.42 : MOVE_SPEED;
     player.dir = 1;
+  }
+
+  const accel = player.ground ? GROUND_ACCEL : AIR_ACCEL;
+  if (target !== 0) {
+    player.vx = approach(player.vx, target, accel * dt);
   } else {
-    player.vx = 0;
+    player.vx = approach(player.vx, 0, FRICTION * dt);
   }
 
   if (player.ground) coyoteTime = COYOTE_WINDOW;
@@ -117,25 +188,18 @@ function update(dt) {
   player.vy += GRAVITY * dt;
 
   const oldBottom = player.y + player.h;
-  const nextX = player.x + player.vx * dt;
-  const nextY = player.y + player.vy * dt;
-  player.x = nextX;
-  player.y = nextY;
+  player.x += player.vx * dt;
+  player.y += player.vy * dt;
   player.ground = false;
 
-  // Escolhe somente uma plataforma para pouso, evitando o personagem
-  // atravessar/oscilar quando duas superfícies ficam próximas.
   if (player.vy >= 0) {
     const bottom = player.y + player.h;
     let landing = null;
 
     for (const p of platforms) {
-      const overlapsX = player.x + player.w - 10 > p.x && player.x + 10 < p.x + p.w;
-      const crossingTop = oldBottom <= p.y + 3 && bottom >= p.y;
-
-      if (overlapsX && crossingTop && (!landing || p.y < landing.y)) {
-        landing = p;
-      }
+      const overlapsX = player.x + player.w - 8 > p.x && player.x + 8 < p.x + p.w;
+      const crossingTop = oldBottom <= p.y + 4 && bottom >= p.y;
+      if (overlapsX && crossingTop && (!landing || p.y < landing.y)) landing = p;
     }
 
     if (landing) {
@@ -146,24 +210,31 @@ function update(dt) {
     }
   }
 
-  // O movimento e a animação são independentes: trocar de frame nunca altera X/Y.
-  if (player.ground && Math.abs(player.vx) > 1 && !down) {
+  updateEnemies(dt);
+
+  if (player.ground && Math.abs(player.vx) > 5 && !down) {
     walkTime += dt * ANIM_SPEED;
     player.animFrame = WALK_FRAMES[Math.floor(walkTime) % WALK_FRAMES.length];
+  } else if (!player.ground) {
+    player.animFrame = 0;
+    walkTime = 0;
   } else {
     walkTime = 0;
     player.animFrame = 0;
   }
 
-  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+  player.x = Math.max(0, Math.min(WORLD_WIDTH - player.w, player.x));
 
-  if (player.y > canvas.height + 90) respawn();
+  if (player.y > canvas.height + 180) respawn();
+
+  // Câmera suave, sem acompanhar cada micro movimento.
+  const targetCamera = Math.max(0, Math.min(WORLD_WIDTH - canvas.width, player.x - canvas.width * 0.38));
+  cameraX += (targetCamera - cameraX) * Math.min(1, dt * 7);
 
   if (!fragment.collected) {
     const dx = (player.x + player.w / 2) - fragment.x;
     const dy = (player.y + player.h / 2) - fragment.y;
-
-    if (Math.hypot(dx, dy) < 55) {
+    if (Math.hypot(dx, dy) < 62) {
       fragment.collected = true;
       finished = true;
       updateObjective();
@@ -183,10 +254,57 @@ function drawBackground() {
 
   if (background.complete && background.naturalWidth) {
     ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(background, 0, 0, canvas.width, canvas.height);
+    const scale = canvas.height / background.naturalHeight;
+    const bw = background.naturalWidth * scale;
+    const offset = -(cameraX * 0.18) % bw;
+    for (let x = offset - bw; x < canvas.width + bw; x += bw) {
+      ctx.drawImage(background, x, 0, bw, canvas.height);
+    }
     ctx.fillStyle = 'rgba(20, 8, 32, 0.08)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+}
+
+function drawWorld() {
+  ctx.save();
+  ctx.translate(-Math.round(cameraX), 0);
+
+  // Pequena camada de chão/folhagem para dar mais sensação de profundidade.
+  ctx.fillStyle = 'rgba(35,70,48,.35)';
+  ctx.fillRect(cameraX, 505, canvas.width, 35);
+
+  for (const p of platforms) {
+    ctx.fillStyle = '#49333f';
+    ctx.fillRect(p.x, p.y, p.w, p.h);
+    ctx.fillStyle = '#79a85d';
+    ctx.fillRect(p.x, p.y, p.w, 7);
+    ctx.fillStyle = 'rgba(255,255,255,.10)';
+    ctx.fillRect(p.x + 8, p.y + 8, Math.max(0,p.w - 16), 3);
+  }
+
+  for (const e of enemies) {
+    if (!e.alive) continue;
+    const bob = Math.sin(performance.now()/160 + e.x) * 1.5;
+    ctx.save();
+    ctx.translate(e.x, e.y + bob);
+    ctx.fillStyle = '#6e355e';
+    ctx.beginPath();
+    ctx.roundRect(0, 8, e.w, e.h - 8, 10);
+    ctx.fill();
+    ctx.fillStyle = '#ffb7d8';
+    ctx.beginPath();
+    ctx.arc(11, 14, 5, 0, Math.PI*2);
+    ctx.arc(27, 14, 5, 0, Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle = '#24152b';
+    ctx.beginPath();
+    ctx.arc(12, 15, 2, 0, Math.PI*2);
+    ctx.arc(28, 15, 2, 0, Math.PI*2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  ctx.restore();
 }
 
 function drawFragment() {
@@ -196,7 +314,7 @@ function drawFragment() {
   const bob = Math.sin(t) * 6;
 
   ctx.save();
-  ctx.translate(fragment.x, fragment.y + bob);
+  ctx.translate(fragment.x - cameraX, fragment.y + bob);
   ctx.rotate(Math.sin(t) * 0.12);
   ctx.fillStyle = '#ffe26b';
   ctx.strokeStyle = '#fff4b0';
@@ -222,30 +340,30 @@ function drawPlayer() {
   if (!sprite.complete || !sprite.naturalWidth) {
     ctx.fillStyle = '#fff';
     ctx.beginPath();
-    ctx.arc(player.x + player.w/2, player.y + 30, 25, 0, Math.PI*2);
+    ctx.arc(player.x - cameraX + player.w/2, player.y + 30, 25, 0, Math.PI*2);
     ctx.fill();
     return;
   }
 
   const down = downPressed() && player.ground;
-  const moving = player.ground && Math.abs(player.vx) > 1 && !down;
+  const moving = player.ground && Math.abs(player.vx) > 5 && !down;
 
   let row = IDLE_ROW;
   let frame = 0;
 
   if (!player.ground) {
     row = JUMP_ROW;
-    frame = Math.max(0, Math.min(4, Math.floor((Math.abs(player.vy) / 720) * 4)));
+    frame = player.vy < -100 ? 1 : player.vy > 260 ? 4 : 2;
   } else if (down) {
     row = DOWN_ROW;
-    frame = Math.floor(performance.now() / 120) % 5;
+    frame = Math.floor(performance.now() / 140) % 4;
   } else if (moving) {
     row = WALK_ROW;
     frame = player.animFrame;
   }
 
   const size = 112;
-  const drawX = Math.round(player.x - 27);
+  const drawX = Math.round(player.x - cameraX - 27);
   const drawY = Math.round(player.y - 38);
 
   ctx.save();
@@ -264,11 +382,11 @@ function drawPlayer() {
 
 function drawHud() {
   ctx.fillStyle = 'rgba(35,18,55,.60)';
-  ctx.fillRect(14, 14, 360, 42);
+  ctx.fillRect(14, 14, 390, 42);
   ctx.fillStyle = '#fff';
   ctx.font = '17px system-ui';
   ctx.fillText(
-    fragment.collected ? '✦ Fragmento encontrado' : '✦ Suba pelas pedras até o fragmento',
+    fragment.collected ? '✦ Fragmento encontrado' : '✦ Encontre o fragmento da Coroa',
     26, 41
   );
 }
@@ -276,6 +394,7 @@ function drawHud() {
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
+  drawWorld();
   drawFragment();
   drawPlayer();
   drawHud();
