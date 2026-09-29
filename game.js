@@ -36,6 +36,10 @@ sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
 const background = new Image();
 background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-3';
 
+// Fragmento da Coroa: sprite sheet com 6 frames, brilho e símbolo da coroa.
+const fragmentSprite = new Image();
+fragmentSprite.src = 'assets/fragment_sprite.svg?v=fragment-1';
+
 // Fase maior: os trechos antigos foram mantidos e novos caminhos foram adicionados.
 const platforms = [
   {x:0,    y:390, w:260, h:24},
@@ -310,29 +314,34 @@ function drawWorld() {
 function drawFragment() {
   if (fragment.collected) return;
 
-  const t = performance.now() / 450;
-  const bob = Math.sin(t) * 6;
+  const t = performance.now() / 1000;
+  const bob = Math.sin(t * 3.1) * 6;
+  const frame = Math.floor(t * 8) % 6;
+  const size = 56;
+  const drawX = Math.round(fragment.x - cameraX - size / 2);
+  const drawY = Math.round(fragment.y + bob - size / 2);
 
   ctx.save();
-  ctx.translate(fragment.x - cameraX, fragment.y + bob);
-  ctx.rotate(Math.sin(t) * 0.12);
-  ctx.fillStyle = '#ffe26b';
-  ctx.strokeStyle = '#fff4b0';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
+  ctx.globalAlpha = 0.96;
 
-  for (let i=0; i<8; i++) {
-    const a = i * Math.PI / 4;
-    const r = i % 2 === 0 ? 18 : 8;
-    const x = Math.cos(a) * r;
-    const y = Math.sin(a) * r;
-    if (i === 0) ctx.moveTo(x, y);
-    else ctx.lineTo(x, y);
+  if (fragmentSprite.complete && fragmentSprite.naturalWidth) {
+    ctx.drawImage(
+      fragmentSprite,
+      frame * 64, 0, 64, 64,
+      drawX, drawY, size, size
+    );
+  } else {
+    // Fallback mínimo enquanto o sprite carrega.
+    ctx.fillStyle = '#ffe26b';
+    ctx.beginPath();
+    ctx.moveTo(fragment.x - cameraX, drawY);
+    ctx.lineTo(fragment.x - cameraX + 18, drawY + 28);
+    ctx.lineTo(fragment.x - cameraX, drawY + 56);
+    ctx.lineTo(fragment.x - cameraX - 18, drawY + 28);
+    ctx.closePath();
+    ctx.fill();
   }
 
-  ctx.closePath();
-  ctx.fill();
-  ctx.stroke();
   ctx.restore();
 }
 
@@ -386,7 +395,7 @@ function drawHud() {
   ctx.fillStyle = '#fff';
   ctx.font = '17px system-ui';
   ctx.fillText(
-    fragment.collected ? '✦ Fragmento encontrado' : '✦ Encontre o fragmento da Coroa',
+    fragment.collected ? '✦ Fragmento 1/1 — encontrado' : '✦ Fragmento 0/1 — encontre o fragmento da Coroa',
     26, 41
   );
 }
