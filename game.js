@@ -34,7 +34,13 @@ const sprite = new Image();
 sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
 
 const background = new Image();
-background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-3';
+background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-4';
+
+// Camadas próprias da Fase 1: jardim encantado, castelo distante e folhagem em primeiro plano.
+const midground = new Image();
+midground.src = 'assets/phase1_midground.svg?v=phase1-mid-1';
+const foreground = new Image();
+foreground.src = 'assets/phase1_foreground.svg?v=phase1-fg-1';
 
 // Fragmento da Coroa: sprite sheet com 6 frames, brilho e símbolo da coroa.
 const fragmentSprite = new Image();
@@ -270,9 +276,19 @@ function drawBackground() {
     for (let x = offset - bw; x < canvas.width + bw; x += bw) {
       ctx.drawImage(background, x, 0, bw, canvas.height);
     }
-    ctx.fillStyle = 'rgba(20, 8, 32, 0.08)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
+
+  // Castelo e árvores se movem mais devagar que o mundo, criando profundidade real.
+  if (midground.complete && midground.naturalWidth) {
+    const mw = canvas.width;
+    const moffset = -(cameraX * 0.38) % mw;
+    for (let x = moffset - mw; x < canvas.width + mw; x += mw) {
+      ctx.drawImage(midground, x, 0, mw, canvas.height);
+    }
+  }
+
+  ctx.fillStyle = 'rgba(20, 8, 32, 0.035)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
 function drawWorld() {
@@ -288,10 +304,9 @@ function drawWorld() {
       const srcX = p.kind * 128;
       const srcY = 0;
       const srcW = 128;
-      const srcH = 128;
-      const scaleX = p.w / srcW;
-      const scaleY = Math.max(p.h / 36, 0.34);
-      const drawH = Math.max(34, p.h * 2.7);
+      // Mostra apenas a faixa útil da plataforma. A colisão continua pequena e limpa.
+      const srcH = p.kind === 2 ? 58 : 52;
+      const drawH = Math.max(32, p.h + 9);
       ctx.drawImage(platformSprite, srcX, srcY, srcW, srcH, p.x, p.y - (drawH - p.h), p.w, drawH);
     } else {
       ctx.fillStyle = '#49333f';
@@ -319,6 +334,15 @@ function drawWorld() {
   }
 
   ctx.restore();
+}
+
+function drawForeground() {
+  if (!foreground.complete || !foreground.naturalWidth) return;
+  const fw = canvas.width;
+  const foffset = -(cameraX * 0.72) % fw;
+  for (let x = foffset - fw; x < canvas.width + fw; x += fw) {
+    ctx.drawImage(foreground, x, 0, fw, canvas.height);
+  }
 }
 
 function drawFragment() {
@@ -414,6 +438,7 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawWorld();
+  drawForeground();
   drawFragment();
   drawPlayer();
   drawHud();
