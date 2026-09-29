@@ -21,8 +21,8 @@ const JUMP_SPEED = -690;
 const COYOTE_WINDOW = 0.10;
 const JUMP_BUFFER_WINDOW = 0.12;
 
-const FRAME_W = 80;
-const FRAME_H = 80;
+const FRAME_W = 128;
+const FRAME_H = 128;
 const WALK_ROW = 0;
 const JUMP_ROW = 1;
 const DOWN_ROW = 2;
@@ -31,7 +31,7 @@ const WALK_FRAMES = [0,1,2,3,4];
 const ANIM_SPEED = 9;
 
 const sprite = new Image();
-sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-final-2';
+sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
 
 const background = new Image();
 background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-3';
@@ -362,9 +362,9 @@ function drawPlayer() {
     frame = player.animFrame;
   }
 
-  const size = 112;
-  const drawX = Math.round(player.x - cameraX - 27);
-  const drawY = Math.round(player.y - 38);
+  const size = 132;
+  const drawX = Math.round(player.x - cameraX - 37);
+  const drawY = Math.round(player.y - 50);
 
   ctx.save();
   ctx.imageSmoothingEnabled = true;
