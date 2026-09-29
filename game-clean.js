@@ -34,7 +34,9 @@ const sprite = new Image();
 sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
 
 const background = new Image();
-background.src = 'assets/zipzip_phase1_bg.jpg?v=zipzip-bg-5';
+background.src = 'assets/phase1_project_bg.svg?v=project-bg-1';
+const foreground = new Image();
+foreground.src = 'assets/phase1_project_fg.svg?v=project-fg-1';
 
 
 // Fragmento da Coroa: sprite sheet com 6 frames, brilho e símbolo da coroa.
@@ -413,6 +415,11 @@ function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBackground();
   drawWorld();
+  if (foreground.complete && foreground.naturalWidth) {
+    const fw = canvas.width;
+    const off = -(cameraX * 0.68) % fw;
+    for (let x = off - fw; x < canvas.width + fw; x += fw) ctx.drawImage(foreground, x, 0, fw, canvas.height);
+  }
   drawFragment();
   drawPlayer();
   drawHud();
