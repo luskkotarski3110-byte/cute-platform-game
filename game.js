@@ -58,7 +58,7 @@ function updateObjective() {
 }
 
 function jump() {
-  if (!paused && !finished && player.ground) {
+  if (!paused && !finished && (player.ground || coyoteTime > 0)) {
     player.vy = JUMP_SPEED;
     player.ground = false;
     jumpBuffer = 0;
@@ -271,6 +271,7 @@ addEventListener('keydown', e => {
 
   if (k === ' ' || k === 'ArrowUp' || k === 'w' || k === 'W') {
     e.preventDefault();
+    jumpBuffer = JUMP_BUFFER_WINDOW;
     jump();
   }
 });
