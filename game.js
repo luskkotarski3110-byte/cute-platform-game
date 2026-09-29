@@ -2,10 +2,21 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d', { alpha:false });
 
 const keys = Object.create(null);
-const touch = { left:false, right:false };
+const touch = { left:false, right:false, down:false };
 let paused = false;
 let finished = false;
 let last = performance.now();
+let walkTime = 0;
+let coyoteTime = 0;
+let jumpBuffer = 0;
+const MOVE_SPEED = 300;
+const GRAVITY = 1800;
+const JUMP_SPEED = -720;
+const COYOTE_WINDOW = 0.10;
+const JUMP_BUFFER_WINDOW = 0.12;
+const FRAME_W = 32;
+const FRAME_H = 32;
+const WALK_FRAMES = [0,1,2,3,4];
 
 const sprite = new Image();
 sprite.src = 'assets/zipzip_phase1_player_sheet.png?v=zipzip-sprite-2';
@@ -32,7 +43,7 @@ let player = {
 };
 
 function reset() {
-  player = {x:34,y:218,w:58,h:76,vx:0,vy:0,ground:false};
+  player = {x:34,y:218,w:58,h:76,vx:0,vy:0,ground:false,wasGround:false,dir:1,animFrame:0};
   fragment.collected = false;
   finished = false;
   paused = false;
@@ -48,19 +59,24 @@ function updateObjective() {
 
 function jump() {
   if (!paused && !finished && player.ground) {
-    player.vy = -720;
+    player.vy = JUMP_SPEED;
     player.ground = false;
+    jumpBuffer = 0;
   }
 }
 
 function leftPressed() { return !!(keys.ArrowLeft || keys.a || touch.left); }
 function rightPressed() { return !!(keys.ArrowRight || keys.d || touch.right); }
+function downPressed() { return !!(keys.ArrowDown || keys.s || touch.down); }
 
 function respawn() {
   player.x = 34;
   player.y = 218;
   player.vx = 0;
   player.vy = 0;
+  player.ground = false;
+  player.dir = 1;
+  player.animFrame = 0;
 }
 
 function update(dt) {
@@ -69,27 +85,49 @@ function update(dt) {
   const left = leftPressed();
   const right = rightPressed();
 
-  player.vx = 0;
-  if (left) player.vx -= 300;
-  if (right) player.vx += 300;
+  if (left && !right) {
+    player.vx = -MOVE_SPEED;
+    player.dir = -1;
+  } else if (right && !left) {
+    player.vx = MOVE_SPEED;
+    player.dir = 1;
+  } else {
+    player.vx = 0;
+  }
 
-  player.vy += 1800 * dt;
+  if (player.ground) coyoteTime = COYOTE_WINDOW;
+  else coyoteTime = Math.max(0, coyoteTime - dt);
+  jumpBuffer = Math.max(0, jumpBuffer - dt);
+
+  if (jumpBuffer > 0 && coyoteTime > 0 && !downPressed()) jump();
+
+  player.vy += GRAVITY * dt;
 
   const oldBottom = player.y + player.h;
   player.x += player.vx * dt;
   player.y += player.vy * dt;
+  player.wasGround = player.ground;
   player.ground = false;
 
   for (const p of platforms) {
     const bottom = player.y + player.h;
     const overlapsX = player.x + player.w - 10 > p.x && player.x + 10 < p.x + p.w;
-    const crossingTop = oldBottom <= p.y && bottom >= p.y;
+    const crossingTop = oldBottom <= p.y + 2 && bottom >= p.y && player.vy >= 0;
 
-    if (overlapsX && crossingTop && player.vy >= 0) {
+    if (overlapsX && crossingTop) {
       player.y = p.y - player.h;
       player.vy = 0;
       player.ground = true;
+      coyoteTime = COYOTE_WINDOW;
     }
+  }
+
+  if (Math.abs(player.vx) > 0 && player.ground) {
+    walkTime += dt * 10;
+    player.animFrame = WALK_FRAMES[Math.floor(walkTime) % WALK_FRAMES.length];
+  } else {
+    walkTime = 0;
+    player.animFrame = 0;
   }
 
   player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
@@ -169,18 +207,24 @@ function drawPlayer() {
     return;
   }
 
-  // Pose única durante o movimento: elimina a sensação de virar/tremular.
-  // Coordenadas inteiras evitam microdeslocamentos visuais no canvas.
-  ctx.imageSmoothingEnabled = true;
+  // A sprite sheet atual é 5x1. Cada frame é uma pose do walk cycle.
+  // A direção é determinada pelo teclado: direita usa a orientação original,
+  // esquerda usa a mesma pose espelhada. Assim o personagem não troca de lado sozinho.
   const size = 146;
-  const frame = 2;
-  const drawX = Math.round(player.x - 40);
-  const drawY = Math.round(player.y - 36);
-  ctx.drawImage(
-    sprite,
-    frame * 32, 0, 32, 32,
-    drawX, drawY, size, size
-  );
+  const frame = player.ground ? player.animFrame : 2;
+  const drawX = Math.round(player.x - 44);
+  const drawY = Math.round(player.y - 35);
+
+  ctx.save();
+  ctx.imageSmoothingEnabled = true;
+  if (player.dir < 0) {
+    ctx.translate(drawX + size, drawY);
+    ctx.scale(-1, 1);
+    ctx.drawImage(sprite, frame * FRAME_W, 0, FRAME_W, FRAME_H, 0, 0, size, size);
+  } else {
+    ctx.drawImage(sprite, frame * FRAME_W, 0, FRAME_W, FRAME_H, drawX, drawY, size, size);
+  }
+  ctx.restore();
 }
 
 function drawHud() {
@@ -242,11 +286,17 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
     try { btn.setPointerCapture(e.pointerId); } catch (_) {}
 
     if (action === 'jump') {
+      jumpBuffer = JUMP_BUFFER_WINDOW;
       jump();
       return;
     }
 
-    // Só uma direção pode ficar ativa por vez.
+    if (action === 'down') {
+      touch.down = true;
+      return;
+    }
+
+    // Só uma direção horizontal pode ficar ativa por vez.
     if (action === 'left') {
       touch.left = true;
       touch.right = false;
@@ -260,6 +310,7 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
     e.preventDefault();
     if (action === 'left') touch.left = false;
     if (action === 'right') touch.right = false;
+    if (action === 'down') touch.down = false;
   };
 
   btn.addEventListener('pointerdown', press, {passive:false});
@@ -271,7 +322,8 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
 addEventListener('blur', () => {
   touch.left = false;
   touch.right = false;
-  keys.ArrowLeft = keys.ArrowRight = keys.a = keys.d = false;
+  touch.down = false;
+  keys.ArrowLeft = keys.ArrowRight = keys.ArrowDown = keys.a = keys.d = keys.s = false;
 });
 
 reset();
