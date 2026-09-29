@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540">
+<!-- foreground vines and flowers, transparent -->
+<g opacity=".92">
+ <path d="M15 540Q55 445 35 350Q25 310 55 275M75 540Q115 455 100 380" fill="none" stroke="#456f4c" stroke-width="12" stroke-linecap="round"/>
+ <path d="M930 540Q900 450 925 355Q945 315 915 260M875 540Q845 455 860 390" fill="none" stroke="#456f4c" stroke-width="12" stroke-linecap="round"/>
+ <g fill="#6fa653"><ellipse cx="38" cy="420" rx="28" ry="12" transform="rotate(-35 38 420)"/><ellipse cx="82" cy="360" rx="30" ry="13" transform="rotate(28 82 360)"/><ellipse cx="910" cy="420" rx="28" ry="12" transform="rotate(35 910 420)"/><ellipse cx="865" cy="350" rx="30" ry="13" transform="rotate(-28 865 350)"/></g>
+ <g fill="#f6b2d2" stroke="#9b628e" stroke-width="3">
+  <circle cx="52" cy="305" r="13"/><circle cx="32" cy="295" r="13"/><circle cx="72" cy="295" r="13"/><circle cx="52" cy="285" r="13"/>
+  <circle cx="910" cy="290" r="13"/><circle cx="890" cy="300" r="13"/><circle cx="930" cy="300" r="13"/><circle cx="910" cy="310" r="13"/>
+ </g>
+ <g fill="#ffe68d"><circle cx="52" cy="297" r="7"/><circle cx="910" cy="300" r="7"/></g>
+</g>
+<!-- little grass tufts -->
+<g stroke="#4c7b48" stroke-width="7" stroke-linecap="round">
+ <path d="M180 525l-10-35M180 525l12-38M180 525v-42M390 525l-10-32M390 525l12-35M390 525v-38M680 525l-10-34M680 525l13-37M680 525v-42M790 525l-10-30M790 525l12-35M790 525v-40"/>
+</g>
+</svg>
