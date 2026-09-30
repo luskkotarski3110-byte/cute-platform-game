@@ -344,6 +344,44 @@ function drawFragment() {
   ctx.restore();
 }
 
+const trimmedFrames = new Map();
+
+function getTrimmedFrame(row, frame) {
+  const key = row + ':' + frame;
+  if (trimmedFrames.has(key)) return trimmedFrames.get(key);
+
+  const sourceX = frame * FRAME_W;
+  const sourceY = row * FRAME_H;
+
+  const off = document.createElement('canvas');
+  off.width = FRAME_W;
+  off.height = FRAME_H;
+  const octx = off.getContext('2d', { willReadFrequently:true });
+  octx.clearRect(0, 0, FRAME_W, FRAME_H);
+  octx.drawImage(sprite, sourceX, sourceY, FRAME_W, FRAME_H, 0, 0, FRAME_W, FRAME_H);
+
+  const data = octx.getImageData(0, 0, FRAME_W, FRAME_H).data;
+  let minX = FRAME_W, minY = FRAME_H, maxX = -1, maxY = -1;
+
+  for (let y = 0; y < FRAME_H; y++) {
+    for (let x = 0; x < FRAME_W; x++) {
+      if (data[(y * FRAME_W + x) * 4 + 3] > 8) {
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x > maxX) maxX = x;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+
+  const trimmed = maxX < 0
+    ? { sx:0, sy:0, sw:FRAME_W, sh:FRAME_H }
+    : { sx:minX, sy:minY, sw:maxX-minX+1, sh:maxY-minY+1 };
+
+  trimmedFrames.set(key, trimmed);
+  return trimmed;
+}
+
 function drawPlayer() {
   if (!sprite.complete || !sprite.naturalWidth) {
     ctx.fillStyle = '#fff';
@@ -370,19 +408,41 @@ function drawPlayer() {
     frame = player.animFrame;
   }
 
-  const size = 132;
-  const drawX = Math.round(player.x - cameraX - 37);
-  const drawY = Math.round(player.y - 50);
+  // Recorte automático: remove a transparência sobrando de cada frame.
+  const crop = getTrimmedFrame(row, frame);
+
+  // O pé fica alinhado com a base da colisão, evitando "flutuar" ou saltar
+  // visualmente quando a animação troca de frame.
+  const targetHeight = 126;
+  const scale = targetHeight / crop.sh;
+  const drawW = crop.sw * scale;
+  const drawH = crop.sh * scale;
+  const baseline = player.y + player.h + 2;
+  const centerX = player.x - cameraX + player.w / 2;
+  const drawX = Math.round(centerX - drawW / 2);
+  const drawY = Math.round(baseline - drawH);
 
   ctx.save();
   ctx.imageSmoothingEnabled = true;
 
   if (player.dir < 0) {
-    ctx.translate(drawX + size, drawY);
+    ctx.translate(Math.round(centerX), 0);
     ctx.scale(-1, 1);
-    ctx.drawImage(sprite, frame * FRAME_W, row * FRAME_H, FRAME_W, FRAME_H, 0, 0, size, size);
+    ctx.drawImage(
+      sprite,
+      frame * FRAME_W + crop.sx, row * FRAME_H + crop.sy,
+      crop.sw, crop.sh,
+      Math.round(-drawW / 2), drawY,
+      drawW, drawH
+    );
   } else {
-    ctx.drawImage(sprite, frame * FRAME_W, row * FRAME_H, FRAME_W, FRAME_H, drawX, drawY, size, size);
+    ctx.drawImage(
+      sprite,
+      frame * FRAME_W + crop.sx, row * FRAME_H + crop.sy,
+      crop.sw, crop.sh,
+      drawX, drawY,
+      drawW, drawH
+    );
   }
 
   ctx.restore();
