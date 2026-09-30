@@ -12,14 +12,15 @@ let jumpBuffer = 0;
 let cameraX = 0;
 
 const WORLD_WIDTH = 3000;
-const MOVE_SPEED = 250;
-const GROUND_ACCEL = 1900;
-const AIR_ACCEL = 1250;
-const FRICTION = 2200;
+const MOVE_SPEED = 235;
+const GROUND_ACCEL = 1450;
+const AIR_ACCEL = 900;
+const FRICTION = 1750;
 const GRAVITY = 1800;
 const JUMP_SPEED = -690;
-const COYOTE_WINDOW = 0.10;
-const JUMP_BUFFER_WINDOW = 0.12;
+const COYOTE_WINDOW = 0.12;
+const JUMP_BUFFER_WINDOW = 0.14;
+const CAMERA_SMOOTH = 5.5;
 
 const FRAME_W = 128;
 const FRAME_H = 128;
@@ -118,9 +119,9 @@ function jump() {
   }
 }
 
-function leftPressed() { return !!(keys.ArrowLeft || keys.a || touch.left); }
-function rightPressed() { return !!(keys.ArrowRight || keys.d || touch.right); }
-function downPressed() { return !!(keys.ArrowDown || keys.s || touch.down); }
+function leftPressed() { return !!(keys.ArrowLeft || keys.arrowleft || keys.a || keys.A || touch.left); }
+function rightPressed() { return !!(keys.ArrowRight || keys.arrowright || keys.d || keys.D || touch.right); }
+function downPressed() { return !!(keys.ArrowDown || keys.arrowdown || keys.s || keys.S || touch.down); }
 
 function respawn() {
   player.x = Math.max(34, cameraX + 34);
@@ -242,7 +243,7 @@ function update(dt) {
 
   // Câmera suave, sem acompanhar cada micro movimento.
   const targetCamera = Math.max(0, Math.min(WORLD_WIDTH - canvas.width, player.x - canvas.width * 0.38));
-  cameraX += (targetCamera - cameraX) * Math.min(1, dt * 7);
+  cameraX += (targetCamera - cameraX) * Math.min(1, dt * CAMERA_SMOOTH);
 
   if (!fragment.collected) {
     const dx = (player.x + player.w / 2) - fragment.x;
@@ -446,6 +447,7 @@ addEventListener('keydown', e => {
   }
 
   keys[k] = true;
+  keys[k.toLowerCase()] = true;
 
   if (k === ' ' || k === 'ArrowUp' || k === 'w' || k === 'W') {
     e.preventDefault();
@@ -454,7 +456,7 @@ addEventListener('keydown', e => {
   }
 });
 
-addEventListener('keyup', e => { keys[e.key] = false; });
+addEventListener('keyup', e => { keys[e.key] = false; keys[e.key.toLowerCase()] = false; });
 
 document.querySelectorAll('.touch-controls button').forEach(btn => {
   const action = btn.dataset.key;
@@ -476,10 +478,8 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
 
     if (action === 'left') {
       touch.left = true;
-      touch.right = false;
-    } else if (action === 'right') {
+          } else if (action === 'right') {
       touch.right = true;
-      touch.left = false;
     }
   };
 
@@ -500,7 +500,7 @@ addEventListener('blur', () => {
   touch.left = false;
   touch.right = false;
   touch.down = false;
-  keys.ArrowLeft = keys.ArrowRight = keys.ArrowDown = keys.a = keys.d = keys.s = false;
+  keys.ArrowLeft = keys.ArrowRight = keys.ArrowDown = keys.a = keys.A = keys.d = keys.D = keys.s = keys.S = false;
 });
 
 reset();
