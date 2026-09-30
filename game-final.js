@@ -34,6 +34,12 @@ const ANIM_SPEED = 9;
 const sprite = new Image();
 sprite.src = 'assets/player/zipzip_sprite.png?v=zipzip-reference-2';
 
+const walkSprites = [1,2,3,4,5].map(n => {
+  const img = new Image();
+  img.src = 'assets/player/walk/walk_' + String(n).padStart(2,'0') + '.png?v=walk-v1';
+  return img;
+});
+
 const background = new Image();
 background.src = 'assets/zipzip_phase1_bg.jpg?v=project-base-1';
 const foreground = new Image();
@@ -383,6 +389,36 @@ function getTrimmedFrame(row, frame) {
 }
 
 function drawPlayer() {
+  const down = downPressed() && player.ground;
+  const moving = player.ground && Math.abs(player.vx) > 5 && !down;
+
+  // Caminhada agora usa sprites individuais. Os demais estados continuam
+  // usando a sprite sheet antiga até seus sprites individuais serem criados.
+  if (moving && walkSprites.length && walkSprites[player.animFrame] && walkSprites[player.animFrame].complete && walkSprites[player.animFrame].naturalWidth) {
+    const img = walkSprites[player.animFrame];
+    const targetHeight = 126;
+    const scale = targetHeight / img.naturalHeight;
+    const drawW = img.naturalWidth * scale;
+    const drawH = targetHeight;
+    const baseline = player.y + player.h + 2;
+    const centerX = player.x - cameraX + player.w / 2;
+    const drawY = Math.round(baseline - drawH);
+
+    ctx.save();
+    ctx.imageSmoothingEnabled = true;
+
+    if (player.dir < 0) {
+      ctx.translate(Math.round(centerX), 0);
+      ctx.scale(-1, 1);
+      ctx.drawImage(img, Math.round(-drawW / 2), drawY, drawW, drawH);
+    } else {
+      ctx.drawImage(img, Math.round(centerX - drawW / 2), drawY, drawW, drawH);
+    }
+
+    ctx.restore();
+    return;
+  }
+
   if (!sprite.complete || !sprite.naturalWidth) {
     ctx.fillStyle = '#fff';
     ctx.beginPath();
@@ -390,9 +426,6 @@ function drawPlayer() {
     ctx.fill();
     return;
   }
-
-  const down = downPressed() && player.ground;
-  const moving = player.ground && Math.abs(player.vx) > 5 && !down;
 
   let row = IDLE_ROW;
   let frame = 0;
@@ -403,16 +436,9 @@ function drawPlayer() {
   } else if (down) {
     row = DOWN_ROW;
     frame = Math.floor(performance.now() / 140) % 4;
-  } else if (moving) {
-    row = WALK_ROW;
-    frame = player.animFrame;
   }
 
-  // Recorte automático: remove a transparência sobrando de cada frame.
   const crop = getTrimmedFrame(row, frame);
-
-  // O pé fica alinhado com a base da colisão, evitando "flutuar" ou saltar
-  // visualmente quando a animação troca de frame.
   const targetHeight = 126;
   const scale = targetHeight / crop.sh;
   const drawW = crop.sw * scale;
@@ -447,7 +473,6 @@ function drawPlayer() {
 
   ctx.restore();
 }
-
 function drawHud() {
   ctx.fillStyle = 'rgba(35,18,55,.60)';
   ctx.fillRect(14, 14, 390, 42);
