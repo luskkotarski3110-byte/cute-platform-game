@@ -32,15 +32,13 @@ const WALK_FRAMES = [0,1,2,3,4];
 const ANIM_SPEED = 9;
 
 const sprite = new Image();
-sprite.src = 'assets/zipzip_sprite.svg?v=zipzip-reference-1';
+sprite.src = 'assets/player/zipzip_sprite.png?v=zipzip-reference-2';
 
 const background = new Image();
 background.src = 'assets/zipzip_phase1_bg.jpg?v=project-base-1';
 const foreground = new Image();
 foreground.src = 'assets/phase1_project_fg.svg?v=project-fg-2';
 
-
-// Fragmento da Coroa: sprite sheet com 6 frames, brilho e símbolo da coroa.
 const fragmentSprite = new Image();
 fragmentSprite.src = 'assets/fragment_sprite.svg?v=fragment-1';
 
@@ -50,7 +48,6 @@ platformSprite.src = 'assets/platforms_sprite.svg?v=platforms-1';
 const enemySprite = new Image();
 enemySprite.src = 'assets/enemies_sprite.svg?v=enemies-1';
 
-// Fase maior: os trechos antigos foram mantidos e novos caminhos foram adicionados.
 const platforms = [
   {x:0,    y:390, w:260, h:24, kind:0},
   {x:300,  y:340, w:210, h:24, kind:1},
@@ -70,11 +67,10 @@ const platforms = [
 
 const fragment = { x:2920, y:235, collected:false };
 
-// Inimigos simples e leves: patrulham plataformas e podem ser derrotados pulando sobre eles.
 const enemies = [
   {x:385,  y:304, w:38, h:36, vx:55,  left:320,  right:480, alive:true},
   {x:735,  y:384, w:38, h:36, vx:-65, left:575, right:780, alive:true},
-  {x:930,  y:264, w:38, h:36, vx:60,  left:875,  right:1000, alive:true},
+  {x:930,  y:264, w:38, h:36, vx:60, left:875, right:1000, alive:true},
   {x:1160, y:334, w:38, h:36, vx:-70, left:1080, right:1260, alive:true},
   {x:1510, y:314, w:38, h:36, vx:65, left:1450, right:1525, alive:true},
   {x:1710, y:264, w:38, h:36, vx:-75, left:1620, right:1810, alive:true},
@@ -241,7 +237,6 @@ function update(dt) {
 
   if (player.y > canvas.height + 180) respawn();
 
-  // Câmera suave, sem acompanhar cada micro movimento.
   const targetCamera = Math.max(0, Math.min(WORLD_WIDTH - canvas.width, player.x - canvas.width * 0.38));
   cameraX += (targetCamera - cameraX) * Math.min(1, dt * CAMERA_SMOOTH);
 
@@ -266,8 +261,6 @@ function drawBackground() {
   ctx.fillStyle = '#8e55c5';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // O fundo original do projeto é a base visual da Fase 1.
-  // Ele acompanha a câmera suavemente, sem adicionar elementos que não existem no conceito.
   if (background.complete && background.naturalWidth) {
     ctx.imageSmoothingEnabled = true;
     const scale = canvas.height / background.naturalHeight;
@@ -278,11 +271,11 @@ function drawBackground() {
     }
   }
 }
+
 function drawWorld() {
   ctx.save();
   ctx.translate(-Math.round(cameraX), 0);
 
-  // Pequena camada de chão/folhagem para dar mais sensação de profundidade.
   ctx.fillStyle = 'rgba(35,70,48,.35)';
   ctx.fillRect(cameraX, 505, canvas.width, 35);
 
@@ -291,7 +284,6 @@ function drawWorld() {
       const srcX = p.kind * 128;
       const srcY = 0;
       const srcW = 128;
-      // Mostra apenas a faixa útil da plataforma. A colisão continua pequena e limpa.
       const srcH = p.kind === 2 ? 58 : 52;
       const drawH = Math.max(32, p.h + 9);
       ctx.drawImage(platformSprite, srcX, srcY, srcW, srcH, p.x, p.y - (drawH - p.h), p.w, drawH);
@@ -337,13 +329,8 @@ function drawFragment() {
   ctx.globalAlpha = 0.96;
 
   if (fragmentSprite.complete && fragmentSprite.naturalWidth) {
-    ctx.drawImage(
-      fragmentSprite,
-      frame * 64, 0, 64, 64,
-      drawX, drawY, size, size
-    );
+    ctx.drawImage(fragmentSprite, frame * 64, 0, 64, 64, drawX, drawY, size, size);
   } else {
-    // Fallback mínimo enquanto o sprite carrega.
     ctx.fillStyle = '#ffe26b';
     ctx.beginPath();
     ctx.moveTo(fragment.x - cameraX, drawY);
@@ -478,7 +465,7 @@ document.querySelectorAll('.touch-controls button').forEach(btn => {
 
     if (action === 'left') {
       touch.left = true;
-          } else if (action === 'right') {
+    } else if (action === 'right') {
       touch.right = true;
     }
   };
