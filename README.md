@@ -1,51 +1,68 @@
-# Cute Platform Game
+# A Coroa Perdida
 
-## A Coroa Perdida
+Jogo de plataforma 2D de aventura com identidade retrô inspirada na era Super NES.
 
-Jogo de plataforma 2D de aventura em um mundo pequeno, colorido e aconchegante, com identidade visual própria.
+## Conceito
 
-### Lore
+**Zip Zip**, um pequeno hamster aventureiro, atravessa um reino que perdeu a estabilidade depois que a Coroa Real foi fragmentada.
 
-Há muito tempo, a **Coroa Real** não era apenas um símbolo de poder: seus fragmentos mantinham os caminhos mágicos que ligavam as regiões do reino.
+Os 10 fragmentos da Coroa estão espalhados pelo mundo. Cada fragmento guarda uma memória e, juntos, eles revelam a verdade sobre o desaparecimento da Coroa e sobre a força que existe além do selo.
 
-Na noite em que a coroa desapareceu, uma força desconhecida rompeu o seu brilho e espalhou seus fragmentos pelo reino. Depois disso, caminhos antes seguros ficaram instáveis e alguns lugares começaram a perder a própria magia.
+O jogo foi estruturado para ter uma campanha fechada de **10 fases**, com puzzles, inimigos, guardiões, segredos e progressão de mecânicas.
 
-**Zip Zip**, um pequeno hamster aventureiro, recebe a missão de atravessar o reino e recuperar os fragmentos. O primeiro sinal aparece no **Jardim da Rainha**, onde uma luz estranha surge sobre as antigas pedras.
+## Campanha
 
-Cada fragmento encontrado revela uma nova pista sobre a noite do desaparecimento. Assim, as plataformas, os caminhos e os lugares visitados não são apenas obstáculos: eles fazem parte da narrativa.
+| Fase | Região | Mecânica principal |
+|---|---|---|
+| 1 | Jardim da Rainha | Mecanismos e fundamentos |
+| 2 | Bosque dos Cogumelos | Caminhos que mudam |
+| 3 | Ruínas Submersas | Água |
+| 4 | Cidade Quebrada | Realidade fragmentada |
+| 5 | Torre dos Ecos | Som |
+| 6 | Mundo Invertido | Gravidade |
+| 7 | Laboratório Abandonado | Energia e máquinas |
+| 8 | Coração da Coroa | Memórias e narrativa |
+| 9 | A Última Ruptura | Combinação de mecânicas |
+| 10 | O Fim da Coroa | Desafio final |
 
-### Capítulo I — Jardim da Rainha
-
-O jardim era o lugar mais tranquilo do reino, mas agora suas pedras formam um caminho quebrado até uma luz misteriosa.
-
-Zip Zip precisa subir pelas plataformas naturais e alcançar o primeiro fragmento. Ao tocá-lo, ele percebe que o fragmento não é apenas uma parte da coroa: ele guarda uma **memória** da noite em que tudo começou.
-
-A jornada continua no Bosque dos Cogumelos.
-
-### Direção
+## Sistemas
 
 - Plataforma 2D
-- Mundo em miniatura
-- Arte fofa e colorida
-- Personagens e mundo originais
-- Exploração, segredos e pequenas missões
-- Mecânicas próprias
-- Narrativa integrada aos cenários e às fases
+- Movimento e pulo
+- Walk cycle
+- Câmera
+- Colisão
+- Coleta de fragmentos
+- Checkpoints
+- Inimigos
+- Mini-chefes e chefes
+- Puzzles ambientais
+- Áreas secretas
+- HUD
+- Progressão de campanha
+- Suporte a controles mobile
+- Final com variação baseada na exploração
 
-### Estrutura
+## Documentação
 
-- gameplay/ — sistemas e mecânicas
-- story/ — história, personagens e missões
-- assets/ — arte, animações, cenários e áudio
-- docs/ — documentação do projeto
+- [Documento de Design](docs/game-design.md)
+- [Lore completa](story/lore.md)
+- [Estrutura das 10 fases](docs/levels.md)
+- [Mecânicas e sistemas](docs/mechanics.md)
+- [Roadmap](docs/roadmap.md)
+- [Template de fase](docs/phase-template.md)
 
-### Primeira versão jogável
+## Estado atual
 
-1. Movimento
-2. Walk cycle por sprites
-3. Direção esquerda/direita
-4. Pulo
-5. Colisão com plataformas
-6. Câmera e composição de cenário
-7. Coleta do primeiro fragmento
-8. Primeiro cenário: Jardim da Rainha
+A base jogável existente permanece como ponto de partida. A estrutura narrativa e de conteúdo acima define o alvo da campanha; o visual definitivo será refinado posteriormente sem abandonar a identidade do jogo.
+
+## Estrutura do projeto
+
+- `gameplay/` — sistemas e mecânicas
+- `story/` — lore, personagens e missões
+- `assets/` — arte, animações, cenários e áudio
+- `docs/` — documentação e planejamento
+
+## Próximo marco
+
+Transformar a **Fase 1 — Jardim da Rainha** em uma fase completa, com mapa maior, inimigos, puzzle, checkpoint, desafio final e guardião, mantendo o movimento e os sistemas já existentes.
